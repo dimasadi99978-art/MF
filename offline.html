@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Sedang offline - Margaluyu Farm</title>
+    <style>
+        :root { --bg: #f6faf7; --card: #ffffff; --ink: #1d2b24; --soft: #52645a; --forest: #0a3d38; --line: #dbe6de; --wa: #1f8f4a; }
+        @media (prefers-color-scheme: dark) { :root { --bg: #0f1a15; --card: #16241d; --ink: #e8f0ea; --soft: #a9bbb0; --forest: #8fd1b0; --line: #2a3d33; --wa: #2ea35b; } }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 20px; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+        main { width: 100%; max-width: 440px; padding: 28px 24px; text-align: center; background: var(--card); border: 1px solid var(--line); border-radius: 16px; }
+        h1 { margin: 0 0 8px; font-size: 1.25rem; color: var(--forest); }
+        p { margin: 0 0 16px; color: var(--soft); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: 46px; margin-top: 8px; padding: 0 20px; border-radius: 999px; font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; }
+        .btn-primary { border: 0; background: var(--forest); color: var(--bg); }
+        .btn-wa { border: 0; background: var(--wa); color: #fff; }
+    </style>
+    <script src="motion.js" defer></script>
+    <link rel="stylesheet" href="css/motion.css">
+</head>
+<body>
+    <main>
+        <h1>Koneksi internet terputus</h1>
+        <p>Halaman ini belum bisa dimuat. Periksa sinyal atau Wi-Fi Anda, lalu coba lagi. Bila ingin memesan sekarang, Anda tetap bisa menghubungi kami langsung lewat WhatsApp.</p>
+        <button class="btn btn-primary" type="button" onclick="location.reload()">Coba lagi</button>
+        <a class="btn btn-wa" href="https://wa.me/62895635067289?text=Halo%20Margaluyu%20Farm%2C%20saya%20mau%20pesan%20susu%20kambing%20Saanen." target="_blank" rel="noopener">Pesan lewat WhatsApp</a>
+    </main>
+</body>
+</html>

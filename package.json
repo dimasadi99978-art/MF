@@ -1,0 +1,12 @@
+{
+  "name": "margaluyu-farm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test tests/api.test.mjs",
+    "dev": "node scripts/dev-server.mjs",
+    "test:live": "node scripts/smoke-test.mjs"
+  }
+}

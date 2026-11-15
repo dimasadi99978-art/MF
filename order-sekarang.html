@@ -1,0 +1,2766 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="mf-build" content="2026-11-09-r6">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formulir Pemesanan - Margaluyu Farm</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="nav-fix.js" defer></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Tambah Google Fonts untuk kreativitas -->
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- Palette & Base ---------- */
+        :root {
+            --green-deep: var(--forest);
+            --green-soft: var(--paper-alt);
+            --green-accent: var(--accent-deep);
+            --card-shadow: 0 16px 32px rgba(6, 71, 74, 0.14);
+            --radius-lg: 14px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: var(--font-body, 'Inter', sans-serif);
+            background: radial-gradient(circle at 20% 20%, #fdf9ef 0%, #f6efdd 38%, #f0e6cd 70%);
+            color: var(--green-deep);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(179, 137, 63, 0.08), transparent 40%, rgba(10, 61, 56, 0.06));
+            z-index: -1;
+        }
+
+        /* ---------- Layout Section ---------- */
+        .order-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 76px 18px 88px;
+            box-sizing: border-box;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(247, 240, 224, 0.9));
+        }
+
+        .order-section .container {
+            width: 100%;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 12px;
+            box-sizing: border-box;
+        }
+
+        .order-container {
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 48px 46px 54px;
+            background: linear-gradient(150deg, #ffffff 0%, #fbf7ef 55%, #f6eee0 100%);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow), 0 2px 10px rgba(0, 0, 0, 0.04);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .order-container::after {
+            content: '';
+            position: absolute;
+            top: -24px;
+            right: -38px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(179, 137, 63, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+
+        /* ---------- Header ---------- */
+        .order-header {
+            text-align: center;
+            margin: 0 auto 36px;
+            max-width: 760px;
+        }
+
+        .order-header .icon-farm {
+            font-size: 3em;
+            color: var(--green-accent);
+            margin-bottom: 10px;
+        }
+
+        .order-header h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 800;
+            color: var(--green-deep);
+            margin-bottom: 12px;
+            letter-spacing: -0.4px;
+        }
+
+        .order-header p {
+            font-size: 1.02rem;
+            color: var(--ink-soft);
+            font-weight: 400;
+            max-width: 640px;
+            margin: 0 auto;
+            line-height: 1.55;
+        }
+
+        /* ---------- Form ---------- */
+        /* Form langsung menempel pada order-container */
+        .order-container form {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .form-group>label {
+            font-weight: 700;
+            color: var(--green-deep);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group>label::before {
+            content: "\f06c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: var(--green-accent);
+            font-size: 1.05em;
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 15px 14px;
+            border: 1.4px solid var(--line);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            background: var(--paper);
+            transition: all 0.22s ease;
+            outline: none;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Tanggal pengiriman: seluruh bidang terasa dapat diklik, bukan hanya ikon kalender. */
+        #tanggalKirim {
+            cursor: pointer;
+            min-height: 48px;
+            color-scheme: light;
+        }
+
+        #tanggalKirim::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--green-accent);
+            box-shadow: 0 8px 18px rgba(179, 137, 63, 0.18);
+            background: var(--paper-alt);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        select {
+            cursor: pointer;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232f9b5d"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 18px;
+            padding-right: 40px;
+        }
+
+        .btn-submit {
+            padding: 17px;
+            background: linear-gradient(115deg, var(--forest), var(--forest-deep));
+            border: none;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.08rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+            box-shadow: 0 12px 26px rgba(5, 38, 35, 0.24);
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 30px rgba(5, 38, 35, 0.28);
+            filter: brightness(1.02);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 10px 20px rgba(5, 38, 35, 0.22);
+        }
+
+        /* ---------- Responsive Tweaks ---------- */
+        @media (max-width: 1024px) {
+            .order-container {
+                padding: 30px 24px 34px;
+            }
+
+            .order-container form {
+                width: 100%;
+                max-width: 100%;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .order-section {
+                padding: 32px 12px 46px;
+            }
+
+            .order-container {
+                padding: 24px 18px 30px;
+                border-radius: 22px;
+            }
+
+            .order-header {
+                max-width: 100%;
+            }
+
+            .order-container form {
+                width: 100%;
+                max-width: 100%;
+                gap: 14px;
+                padding: 0;
+            }
+
+            .order-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .order-header p {
+                font-size: 0.98rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .order-section {
+                padding: 26px 10px 36px;
+            }
+
+            .order-container {
+                padding: 20px 14px 26px;
+                border-radius: 18px;
+            }
+
+            .order-container form {
+                width: 100%;
+                max-width: 100%;
+                gap: 12px;
+            }
+
+            .form-group>label {
+                font-size: 0.97rem;
+            }
+
+            input,
+            select,
+            textarea {
+                padding: 13px;
+                font-size: 0.98rem;
+            }
+
+            .btn-submit {
+                font-size: 1.02rem;
+                padding: 15px;
+            }
+        }
+
+        /* ---------- Metode Pembayaran ---------- */
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .payment-option {
+            flex: 1;
+            min-width: 160px;
+            display: flex !important;
+            align-items: center;
+            gap: 10px;
+            padding: 16px;
+            border: 1.4px solid var(--line);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .78);
+            min-height: 76px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--green-deep);
+            transition: all 0.2s ease;
+        }
+
+        .payment-option:has(input:checked) {
+            border-color: var(--green-accent);
+            background: var(--paper-alt);
+            box-shadow: 0 8px 20px rgba(10, 61, 56, .09);
+        }
+
+        .payment-option:has(input:checked)::after {
+            content: '✓';
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            width: 20px;
+            height: 20px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--green-deep);
+            color: white;
+            font-size: 12px;
+        }
+
+        .payment-option span {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-right: 18px;
+        }
+
+        .payment-option small {
+            font-size: .78rem;
+            line-height: 1.4;
+            color: var(--ink-soft);
+            font-weight: 400;
+        }
+
+        .payment-option:has(input:checked) small {
+            color: var(--green-deep);
+        }
+
+        .payment-option input {
+            width: auto;
+            padding: 0;
+            accent-color: var(--green-accent);
+        }
+
+        .payment-option::before {
+            content: none;
+        }
+
+        .qris-box {
+            text-align: center;
+            padding: 22px 18px;
+            margin-top: 14px;
+            background: linear-gradient(145deg, #fff 0%, #f4f8f1 100%);
+            border: 1px solid rgba(10, 61, 56, .12);
+            border-radius: 18px;
+            animation: paymentReveal .28s ease both;
+        }
+
+        .cod-box {
+            margin-top: 12px;
+            padding: 13px 15px;
+            border-radius: 13px;
+            background: rgba(10, 61, 56, .055);
+            color: var(--ink-soft);
+            font-size: .9rem;
+            line-height: 1.55;
+        }
+
+        .pay-steps {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin: 0 auto 16px;
+            max-width: 480px;
+            text-align: left;
+        }
+
+        .pay-step {
+            padding: 10px;
+            border-radius: 11px;
+            background: rgba(10, 61, 56, .055);
+            font-size: .78rem;
+            line-height: 1.4;
+            color: var(--ink-soft);
+        }
+
+        .pay-step b {
+            display: block;
+            color: var(--green-deep);
+            margin-bottom: 3px;
+        }
+
+        .upload-label {
+            display: block;
+            font-weight: 700;
+            color: var(--green-deep);
+            margin-bottom: 7px;
+        }
+
+        .proof-preview {
+            display: none;
+            margin: 10px auto 0;
+            max-width: 160px;
+            max-height: 150px;
+            border-radius: 10px;
+            object-fit: contain;
+            border: 1px solid var(--line);
+        }
+
+        .proof-name {
+            font-size: .82rem;
+            color: var(--ink-soft);
+            margin: 6px 0 0;
+            overflow-wrap: anywhere;
+        }
+
+        @keyframes paymentReveal {
+            from {
+                opacity: 0;
+                transform: translateY(7px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width:520px) {
+            .payment-options {
+                grid-template-columns: 1fr;
+                gap: 9px;
+            }
+
+            .payment-option {
+                min-height: 64px;
+                padding: 13px 14px;
+            }
+
+            .pay-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .pay-step {
+                display: flex;
+                gap: 8px;
+                align-items: baseline;
+            }
+
+            .pay-step b {
+                min-width: 48px;
+            }
+        }
+
+        .qris-title {
+            font-weight: 700;
+            color: var(--green-deep);
+            margin-bottom: 14px;
+        }
+
+        .qris-total {
+            display: inline-block;
+            background: var(--green-deep);
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.25em;
+            padding: 8px 22px;
+            border-radius: 30px;
+            margin-bottom: 16px;
+        }
+
+        .qris-image {
+            width: 100%;
+            max-width: 260px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 14px;
+        }
+
+        .qris-note {
+            font-size: 0.92rem;
+            color: var(--ink-soft);
+            max-width: 420px;
+            margin: 0 auto 16px;
+            line-height: 1.5;
+        }
+
+        .qris-wa-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            background: #25d366;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: transform 0.15s ease;
+        }
+
+        .qris-wa-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ---------- Konfirmasi Pesanan ---------- */
+        .order-confirm {
+            display: none;
+            text-align: center;
+            padding: 24px 22px 22px;
+            background: #fff;
+            border: 1px solid rgba(46, 125, 50, .16);
+            border-radius: 20px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, .12);
+            opacity: 0;
+            transform: translateY(18px) scale(.96);
+        }
+
+        .order-confirm.is-visible {
+            animation: orderConfirmPop .58s cubic-bezier(.2, .8, .2, 1) forwards;
+        }
+
+        @keyframes orderConfirmPop {
+            0% {
+                opacity: 0;
+                transform: translateY(18px) scale(.96);
+            }
+
+            70% {
+                opacity: 1;
+                transform: translateY(-4px) scale(1.01);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .order-confirm .icon-check {
+            font-size: 3em;
+            color: var(--green-accent);
+            margin-bottom: 10px;
+        }
+
+        .order-confirm h3 {
+            color: var(--green-deep);
+            font-size: 1.5em;
+            margin-bottom: 8px;
+        }
+
+        .order-confirm .order-id-box {
+            display: inline-block;
+            background: var(--paper-alt);
+            border: 1.4px dashed var(--green-accent);
+            border-radius: 12px;
+            padding: 10px 22px;
+            font-weight: 800;
+            font-size: 1.2em;
+            color: var(--green-deep);
+            margin: 14px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .order-confirm p {
+            color: var(--ink-soft);
+            max-width: 480px;
+            margin: 0 auto 18px;
+        }
+
+        .order-confirm .confirm-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .order-confirm .confirm-buttons a {
+            padding: 12px 22px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .btn-track {
+            background: var(--green-accent);
+            color: #fff;
+        }
+
+        .btn-wa-proof {
+            background: #25d366;
+            color: #fff;
+        }
+
+        /* ---------- Struk / Invoice ---------- */
+        .invoice-box {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            margin: 18px 0;
+            background: #fff;
+            border: 1px solid #e8e1d5;
+            border-radius: 14px;
+            padding: 18px 20px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--ink-soft);
+            text-align: left;
+            box-shadow: 0 4px 14px rgba(27, 54, 45, 0.045);
+        }
+
+        .invoice-box .invoice-head {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .invoice-box .invoice-brand {
+            font-weight: 800;
+            color: var(--green-deep);
+            font-size: 1.15em;
+        }
+
+        .invoice-box .invoice-sub {
+            font-size: 0.85em;
+            color: var(--muted);
+        }
+
+        .invoice-box .invoice-id {
+            text-align: center;
+            font-weight: 700;
+            color: var(--green-accent);
+            margin: 10px 0 14px;
+            letter-spacing: 0.5px;
+            overflow-wrap: anywhere;
+        }
+
+        .invoice-box .invoice-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.98em;
+            color: var(--ink-soft);
+            padding: 7px 0;
+        }
+
+        .invoice-box .invoice-row span {
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            white-space: normal;
+        }
+
+        .invoice-box .invoice-row span:last-child {
+            text-align: right;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .invoice-box .invoice-total {
+            font-size: 1.08em;
+            margin-top: 10px;
+            padding: 13px 14px;
+            border-radius: 10px;
+            background: var(--green-deep);
+            color: #fff;
+        }
+
+        .invoice-box .invoice-total span {
+            color: var(--green-deep) !important;
+            font-weight: 800 !important;
+        }
+
+        .invoice-box hr {
+            border: none;
+            border-top: 1px dashed var(--line);
+            margin: 10px 0;
+        }
+
+        @media print {
+            @page {
+                size: 80mm auto;
+                margin: 0;
+            }
+
+            html,
+            body {
+                width: 80mm !important;
+                min-width: 80mm !important;
+                max-width: 80mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+                overflow: visible !important;
+            }
+
+            body * {
+                visibility: hidden !important;
+            }
+
+            .invoice-box,
+            .invoice-box * {
+                visibility: visible !important;
+            }
+
+            .invoice-box {
+                position: absolute !important;
+                top: 0 !important;
+                left: 4mm !important;
+                width: 72mm !important;
+                min-width: 72mm !important;
+                max-width: 72mm !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 8px 6px !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                font-size: 11px !important;
+                line-height: 1.35 !important;
+                overflow: visible !important;
+            }
+
+            .invoice-box .invoice-brand {
+                font-size: 14px !important;
+            }
+
+            .invoice-box .invoice-sub {
+                font-size: 10px !important;
+            }
+
+            .invoice-box .invoice-id {
+                margin: 7px 0 9px !important;
+            }
+
+            .invoice-box .invoice-row {
+                font-size: 10.5px !important;
+            }
+
+            .invoice-box .invoice-total {
+                font-size: 12px !important;
+            }
+        }
+    
+        /* Checkout: dua kolom di desktop, satu alur di layar kecil. */
+        .order-container {
+            max-width: 1180px;
+            padding: clamp(24px, 3.2vw, 42px);
+            overflow: visible;
+        }
+        .order-container form#orderForm {
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(280px, .85fr);
+            align-items: start;
+            gap: 24px;
+        }
+        .checkout-main {
+            grid-column: 1;
+            grid-row: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            gap: 18px;
+        }
+        .checkout-main > .form-group { margin: 0; }
+        .checkout-main .form-group { gap: 8px; }
+        .checkout-main textarea { min-height: 100px; }
+        .checkout-main .qris-box, .checkout-main .cod-box { margin: 0; }
+        /* Beri ruang di bawah navbar tetap, terutama pada layout laptop saat panel QRIS aktif. */
+        #qrisBox, #codBox, #staticQrisPaymentPanel { scroll-margin-top: 104px; }
+        .checkout-side {
+            grid-column: 2;
+            grid-row: 1;
+            min-width: 0;
+            align-self: start;
+            /* Hindari panel ringkasan menempel di belakang navbar fixed saat scroll. */
+            position: static;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid rgba(10, 61, 56, .14);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(27, 54, 45, .07);
+        }
+        .checkout-summary-title {
+            margin: 0 0 14px;
+            color: var(--green-deep, #0a3d38);
+            font-size: 1.08rem;
+            font-weight: 800;
+            letter-spacing: -.01em;
+        }
+        .checkout-side .invoice-box {
+            margin: 0 0 16px !important;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+            font-size: 15px;
+        }
+        .checkout-side .invoice-row { padding: 10px 0; }
+        .checkout-side .invoice-total {
+            margin-top: 12px;
+            padding: 16px;
+            border-radius: 12px;
+            background: #f2f5ed;
+            border: 1px solid rgba(10, 61, 56, .12);
+            font-size: 1rem;
+        }
+        .checkout-side .invoice-total span,
+        .checkout-side .invoice-total span:last-child { color: var(--green-deep, #0a3d38) !important; }
+        .checkout-side .invoice-total span:last-child { font-size: 1.24rem; font-weight: 800 !important; }
+        .checkout-side #cfTurnstile { margin: 0 0 12px !important; }
+        .checkout-side .btn-submit { display: block; width: 100%; margin: 0; min-height: 54px; border-radius: 12px; }
+        .checkout-main input, .checkout-main select, .checkout-main textarea { min-width: 0; }
+        .checkout-main .payment-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .checkout-main .payment-option { min-width: 0; }
+        @media (max-width: 820px) {
+            .order-container form#orderForm { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+            .checkout-main { grid-column: 1; grid-row: auto; gap: 16px; }
+            .checkout-side { grid-column: 1; grid-row: auto; position: static; padding: 18px; margin-top: 0; }
+            .checkout-side .invoice-box { margin-bottom: 12px !important; }
+            .checkout-side .invoice-total { margin-top: 8px; }
+        }
+        @media (max-width: 520px) {
+            .area-detect button { margin-left: 0; width: 100%; }
+            .order-section { padding: 24px 10px 34px; }
+            .order-section .container { padding: 0; }
+            .order-container { padding: 20px 14px 22px; border-radius: 16px; }
+            .order-header { margin-bottom: 24px; }
+            .order-header .icon-farm { font-size: 2.25em; }
+            .order-header h2 { font-size: 1.65rem; }
+            .order-header p { font-size: .93rem; }
+            .order-container form#orderForm { gap: 12px; }
+            .checkout-main { gap: 14px; }
+            .checkout-main .payment-options { grid-template-columns: minmax(0, 1fr); }
+            .checkout-side { padding: 16px; border-radius: 14px; }
+            .checkout-side .invoice-row { gap: 12px; }
+            .checkout-side .invoice-total { padding: 14px 12px; }
+            .checkout-side .invoice-total span:last-child { font-size: 1.15rem; }
+            .checkout-side .btn-submit { min-height: 50px; }
+        }
+
+        /* Visual refinement: permukaan bersih, tanpa gradasi dekoratif dan efek berlebihan. */
+        body { background:#f5f5f0; color:#173c35; }
+        body::before, .order-container::after { display:none !important; }
+        .order-section { background:#f5f5f0; padding-top:54px; }
+        .order-container { background:#fff; border:1px solid #e4e8e1; border-radius:14px; box-shadow:0 8px 28px rgba(20,45,38,.055); }
+        .order-header { margin-bottom:28px; }
+        .order-header .icon-farm { color:#0b5147; }
+        .order-header h2 { letter-spacing:-.7px; }
+        .order-header p { max-width:560px; }
+        .form-group>label { font-size:.94rem; }
+        input, select, textarea { border:1px solid #d9dfd8; border-radius:9px; background:#fff; box-shadow:none; }
+        input:focus, select:focus, textarea:focus { border-color:#176b5c; box-shadow:0 0 0 3px rgba(23,107,92,.10); background:#fff; }
+        .checkout-side { border:1px solid #e1e7e0; border-radius:12px; box-shadow:none; background:#fbfcfa; }
+        .checkout-side .invoice-total { background:#edf4ef; border:1px solid #dce9df; }
+        .checkout-side .btn-submit { border-radius:9px; background:#06483f; box-shadow:none; }
+        .checkout-side .btn-submit:hover { transform:none; filter:brightness(1.07); box-shadow:none; }
+        @media(max-width:520px) { .order-section { padding:24px 10px 34px; } .order-container { border-radius:12px; } }
+    </style>
+    <link rel="stylesheet" href="mobile-responsive.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/receipt.css">
+    <style id="checkout-ux-refinement">
+        /* Checkout refinement: ringkas, konsisten, dan nyaman digunakan. */
+        .order-container form#orderForm { gap: clamp(18px, 2.2vw, 28px); }
+        .checkout-main { gap: 17px; }
+        .checkout-side {
+            padding: 18px;
+            border-color: #e2e8e2;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(20, 45, 38, .06);
+        }
+        .checkout-summary-title { font-size: 1rem; margin-bottom: 10px; line-height: 1.4; }
+        .checkout-side .invoice-box { font-size: .92rem; margin-bottom: 12px !important; }
+        /* Total sudah tampil di Ringkasan Pembayaran; hindari duplikasi sebelum pesanan dibuat. */
+        #qrisBox > .qris-total { display: none !important; }
+        .checkout-side .invoice-row { padding: 7px 0; gap: 12px; line-height: 1.45; }
+        .checkout-side .invoice-row > span:last-child { text-align: right; overflow-wrap: anywhere; }
+        .checkout-side .invoice-total {
+            margin-top: 8px; padding: 10px 12px; min-height: 42px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            border: 0; border-radius: 8px; background: #063f38;
+            box-shadow: none;
+        }
+        .checkout-side .invoice-total span,
+        .checkout-side .invoice-total span:last-child { color: #fff !important; }
+        .checkout-side .invoice-total span:first-child { font-size: .93rem; font-weight: 700; }
+        .checkout-side .invoice-total span:last-child { font-size: 1.08rem; font-weight: 800 !important; }
+        .checkout-side #cfTurnstile { margin-bottom: 10px !important; }
+        .checkout-side .btn-submit {
+            min-height: 44px; padding: 10px 14px; margin-top: 8px;
+            border: 0; border-radius: 8px; font-size: .94rem;
+            box-shadow: none; transform: none;
+        }
+        .checkout-side .btn-submit::before,
+        .checkout-side .btn-submit::after { display: none !important; content: none !important; }
+        .checkout-side .btn-submit:hover { box-shadow: none; transform: none; filter: brightness(1.04); }
+        .checkout-side .btn-submit:active { transform: translateY(1px); }
+        .checkout-side .btn-submit:focus-visible, .checkout-main input:focus-visible,
+        .checkout-main select:focus-visible, .checkout-main textarea:focus-visible,
+        .checkout-main button:focus-visible { outline: 3px solid rgba(18, 119, 91, .28); outline-offset: 2px; }
+        .checkout-main input, .checkout-main select, .checkout-main textarea { border-radius: 10px; }
+        .checkout-main .payment-option { border-radius: 12px; transition: border-color .18s ease, background .18s ease; }
+        @media (max-width: 820px) {
+            .order-container form#orderForm { gap: 16px; }
+            .checkout-side { padding: 17px; }
+        }
+        @media (max-width: 520px) {
+            .checkout-side { padding: 13px; border-radius: 12px; }
+            .checkout-summary-title { font-size: .94rem; margin-bottom: 6px; }
+            .checkout-side .invoice-box { font-size: .87rem; margin-bottom: 8px !important; }
+            .checkout-side .invoice-row { padding: 4px 0; font-size: .87rem; gap: 8px; }
+            .checkout-side .invoice-total { padding: 8px 10px; min-height: 36px; margin-top: 6px; border-radius: 7px; }
+            .checkout-side .invoice-total span:first-child { font-size: .84rem; }
+            .checkout-side .invoice-total span:last-child { font-size: .94rem; }
+            .checkout-side .btn-submit { min-height: 38px; padding: 8px 12px; margin-top: 7px; font-size: .87rem; border-radius: 7px; }
+        }
+        @media (prefers-reduced-motion: reduce) { .checkout-main .payment-option { transition: none; } }
+
+        /* Final layout: formulir satu kolom, dengan lebar yang nyaman dibaca di laptop. */
+        .order-container {
+            max-width: 820px !important;
+            padding: clamp(20px, 3vw, 32px) !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        .order-container form#orderForm {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 16px !important;
+        }
+        .checkout-main,
+        .checkout-side {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .checkout-main { order: 1; }
+        .checkout-side { order: 2; }
+
+        /* Total adalah informasi, bukan tombol kedua. */
+        .checkout-side .invoice-total {
+            background: #eef3ef !important;
+            border: 1px solid #d6e1d9 !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            color: #153b34 !important;
+            opacity: 1 !important;
+            min-height: 0 !important;
+            padding: 10px 12px !important;
+            margin-top: 8px !important;
+        }
+        .checkout-side .invoice-total span,
+        .checkout-side .invoice-total span:last-child {
+            color: #153b34 !important;
+        }
+        .checkout-side .invoice-total span:first-child { font-weight: 600 !important; }
+        .checkout-side .invoice-total span:last-child { font-size: 1rem !important; font-weight: 800 !important; }
+        .checkout-side .btn-submit {
+            background: #063f38;
+            color: #fff;
+            box-shadow: none !important;
+            border-radius: 9px !important;
+            min-height: 44px !important;
+        }
+        @media (max-width: 820px) {
+            .order-container { max-width: 100% !important; }
+        }
+        @media (max-width: 520px) {
+            .order-container { padding: 20px 14px 22px !important; }
+            .order-container form#orderForm { gap: 13px !important; }
+            .checkout-side .invoice-total { padding: 9px 10px !important; }
+            .checkout-side .invoice-total span:last-child { font-size: .95rem !important; }
+            .checkout-side .btn-submit { min-height: 40px !important; }
+        }
+    </style>
+    <script src="reveal.js"></script>
+    
+    <link rel="stylesheet" href="css/order-classic.css">
+    <style id="checkout-final">
+        /* Tata letak final checkout: satu kolom, lebar nyaman di laptop, rapi di HP.
+           Diletakkan setelah order-classic.css agar menjadi aturan terakhir. */
+        html, body { overflow-x: clip; } /* clip (bukan hidden) agar header tetap sticky/fixed */
+        .order-container { max-width: 620px !important; margin-left: auto !important; margin-right: auto !important; padding: 32px 30px 34px !important; }
+        .order-container form#orderForm { display: flex !important; flex-direction: column !important; gap: 16px !important; grid-template-columns: none !important; }
+        .order-container form#orderForm > .checkout-main,
+        .order-container form#orderForm > .checkout-side { grid-column: auto !important; grid-row: auto !important; width: 100% !important; max-width: 100% !important; position: static !important; }
+        .order-container form#orderForm > .checkout-main { gap: 16px; }
+        .order-container .order-header p { max-width: 520px; margin-left: auto; margin-right: auto; }
+        .order-container form#orderForm .delivery-area-field { margin-top: 14px; }
+        #orderForm .form-help { display: block; margin-top: 6px; font-size: .8rem; line-height: 1.5; color: #5d6b63; text-align: left; }
+        #promoMsg { min-height: 1.2em; }
+
+        /* Status area pengiriman */
+        .zona-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: #fdf0ee; border: 1px solid #e3b4ae; color: #8a1f18; font-size: .85rem; line-height: 1.45; }
+        .zona-status[hidden] { display: none; }
+        .zona-status button { margin-left: auto; padding: 6px 12px; border: 1px solid #8a1f18; border-radius: 6px; background: #fff; color: #8a1f18; font: inherit; font-weight: 600; cursor: pointer; }
+        .zona-status button:hover { background: #8a1f18; color: #fff; }
+        .zona-status a { font-weight: 700; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+        .zona-status a[hidden] { display: none; }
+
+        /* Area pengiriman terdeteksi dari alamat */
+        .area-detect { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: #f3f7f4; border: 1px solid #dbe6de; color: #34463c; font-size: .86rem; line-height: 1.45; }
+        .area-detect.is-ok { background: #edf7f0; border-color: #bfdcc8; color: #1b5e36; }
+        .area-detect.is-warn { background: #fff8e6; border-color: #ecd9a0; color: #6b5200; }
+        .area-detect b { font-weight: 700; }
+        .area-detect button { margin-left: auto; padding: 4px 10px; border: 1px solid currentColor; border-radius: 6px; background: transparent; color: inherit; font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
+        .area-detect button[hidden] { display: none; }
+
+        /* Kotak alamat lipat (gaya FAQ) */
+        .addr-acc { border: 1.4px solid var(--line, #dfe5e0); border-radius: 14px; background: var(--paper, #fff); }
+        .addr-acc[open] { border-color: var(--accent, #4d7f63); }
+        .addr-acc > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; border-radius: 14px; }
+        .addr-acc > summary::-webkit-details-marker { display: none; }
+        .addr-acc > summary:focus-visible { outline: 2px solid var(--accent, #4d7f63); outline-offset: 2px; }
+        .addr-acc > summary::after { content: "\f078"; font-family: "Font Awesome 5 Free"; font-weight: 900; font-size: 11px; flex: 0 0 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: var(--paper-alt, #e9efe9); color: var(--forest, #12362e); margin-left: auto; transition: transform .2s, background .15s, color .15s; }
+        .addr-acc[open] > summary::after { transform: rotate(180deg); background: var(--forest, #12362e); color: #fff; }
+        .addr-ic { flex: 0 0 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--paper-alt, #e9efe9); color: var(--accent-deep, #2f5d45); }
+        .addr-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .addr-title b { font-weight: 700; color: var(--forest, #12362e); }
+        .addr-title small { font-weight: 400; font-size: .8rem; line-height: 1.4; color: var(--muted, #6f7f77); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .addr-body { padding: 2px 16px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 12px; }
+        .addr-body .full { grid-column: 1 / -1; }
+        .addr-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .addr-field > label { font-size: .88rem; font-weight: 600; color: var(--forest, #12362e); }
+        .addr-field > label small { font-weight: 400; color: var(--muted, #6f7f77); }
+        .addr-field input { width: 100%; box-sizing: border-box; }
+        @media (max-width: 560px) { .addr-body { grid-template-columns: 1fr; } .addr-title small { white-space: normal; } }
+        #orderForm textarea#alamat { min-height: 72px !important; height: 72px; resize: vertical; }
+        /* Alamat pengiriman: dua pilihan radio, lalu isian yang menyesuaikan */
+        .wilayah { border: 0; padding: 0; margin: 0; min-width: 0; }
+        .wilayah > legend { padding: 0; margin: 0 0 10px; font-weight: 700; color: var(--green-deep); display: inline-flex; align-items: center; gap: 8px; }
+        .wilayah > legend::before { content: "\f06c"; font-family: "Font Awesome 5 Free"; font-weight: 900; color: var(--green-accent); font-size: 1.05em; }
+        .wilayah-grid { display: flex; flex-wrap: wrap; gap: 4px 28px; }
+        .wilayah .wil-opt { display: inline-flex !important; align-items: center; gap: 10px; margin: 0 !important; padding: 6px 0; cursor: pointer; font-size: .98rem; color: var(--forest, #12362e); line-height: 1.3; }
+        .wil-opt input[type="radio"] { width: 18px; height: 18px; min-width: 18px; padding: 0; border: 0; margin: 0; flex: 0 0 18px; box-shadow: none; background: transparent; accent-color: var(--forest, #12362e); cursor: pointer; }
+        .wil-opt span { font-weight: 500; }
+        .wil-opt input:checked + span { font-weight: 700; }
+        .wil-opt input:disabled + span { opacity: .5; }
+        .wil-opt input:focus-visible { outline: 2px solid var(--accent, #4d7f63); outline-offset: 3px; }
+        .wilayah.is-invalid .wilayah-grid { outline: 1.5px solid #c0392b; outline-offset: 6px; border-radius: 8px; }
+        .kirim-body { display: grid; gap: 14px; margin-top: 12px; animation: kirimMasuk .22s ease-out; }
+        .kirim-body[hidden], .kirim-field[hidden] { display: none; }
+        .kirim-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .kirim-field > label { font-size: .9rem; font-weight: 600; color: var(--forest, #12362e); }
+        .kirim-field > label small { font-weight: 400; color: var(--muted, #6f7f77); }
+        .kirim-field textarea { min-height: 0; resize: vertical; }
+        .kirim-hint { min-height: 1.2em; font-size: .82rem; line-height: 1.45; color: var(--muted, #6f7f77); }
+        .kirim-hint:empty { display: none; }
+        @keyframes kirimMasuk { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { .kirim-body { animation: none; } }
+        .area-detect[hidden] { display: none; }
+        .area-detect a { font-weight: 700; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+        .area-detect a[hidden] { display: none; }
+        @media (max-width: 640px) { .wilayah-grid { flex-direction: column; gap: 2px; } }
+        .area-hint { margin: 6px 0 0; font-size: .84rem; line-height: 1.5; color: #1b6b3a; font-weight: 600; }
+        .area-hint:empty { display: none; }
+        .area-manual { margin-top: 10px; }
+        .area-manual[hidden] { display: none; }
+        .area-manual label { display: block; margin-bottom: 6px; font-size: .88rem; }
+
+        /* Ringkasan pembayaran */
+        .order-container form#orderForm > .checkout-side { padding: 20px 22px !important; background: #fff; border: 1px solid #dfe7e1 !important; border-radius: 14px !important; box-shadow: 0 4px 16px rgba(20, 45, 38, .06) !important; }
+        .checkout-side .checkout-summary-title { margin: 0 0 12px; padding-bottom: 12px; border-bottom: 1px solid #e8eee9; font-size: 1.02rem; font-weight: 800; color: #0a3d38; }
+        .checkout-side .invoice-box { margin: 0 0 8px !important; padding: 0 !important; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+        .checkout-side .invoice-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 8px 0 !important; font-size: .94rem; color: #3b4a42; border: 0; }
+        .checkout-side .invoice-row > span:last-child { font-weight: 600; color: #1d2b24; font-variant-numeric: tabular-nums; text-align: right; }
+        .checkout-side .invoice-row .rc-muted { font-weight: 500; color: #7a867f; font-size: .88rem; }
+        .checkout-side .rc-discount, .checkout-side .rc-discount > span:last-child { color: #1b6b3a !important; }
+        .order-container form#orderForm .checkout-side .invoice-box .invoice-total { display: flex; margin-top: 8px; padding: 14px 0 4px !important; border: 0 !important; border-top: 1px dashed #c9d5cc !important; box-shadow: none !important; border-radius: 0 !important; background: transparent !important; min-height: 0 !important; }
+        .order-container form#orderForm .checkout-side .invoice-box .invoice-total span { color: #0a3d38 !important; }
+        .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:first-child { font-size: .95rem; font-weight: 700 !important; }
+        .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:last-child { font-size: 1.35rem; font-weight: 800 !important; letter-spacing: -.01em; }
+        .checkout-side .rc-note { margin: 0 0 14px; font-size: .78rem; line-height: 1.5; color: #6b776f; text-align: left; }
+        .checkout-side .btn-submit { min-height: 48px !important; border-radius: 10px !important; font-size: 1rem !important; }
+
+        @media (max-width: 820px) {
+            .order-container { max-width: 560px !important; }
+        }
+        @media (max-width: 520px) {
+            /* Form lebih ringkas di HP: tidak menempel ke tepi layar dan tidak terasa terlalu lebar. */
+            .order-section { padding: 64px 10px 40px !important; }
+            .order-section > .container { padding-left: 0 !important; padding-right: 0 !important; }
+            .order-container {
+                width: 100% !important;
+                max-width: 440px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                padding: 18px 12px 20px !important;
+                border-radius: 14px !important;
+            }
+            .order-container .order-header { margin-bottom: 22px !important; }
+            .order-container form#orderForm { gap: 12px !important; }
+            .order-container form#orderForm > .checkout-main { gap: 12px !important; }
+            .order-container form#orderForm > .checkout-side { padding: 13px 11px !important; border-radius: 11px !important; }
+            .order-container input:not([type="checkbox"]):not([type="radio"]),
+            .order-container select,
+            .order-container textarea { max-width: 100%; box-sizing: border-box; font-size: 16px !important; }
+            .order-container .form-group { margin-bottom: 10px !important; }
+            .order-container .form-group > label { font-size: .88rem !important; }
+            .checkout-side .checkout-summary-title { margin-bottom: 8px; padding-bottom: 8px; }
+            .checkout-side .invoice-row { font-size: .86rem; gap: 8px; padding: 6px 0 !important; }
+            .order-container form#orderForm .checkout-side .invoice-box .invoice-total { padding-top: 10px !important; }
+            .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:last-child { font-size: 1.12rem; }
+            .checkout-side .btn-submit { min-height: 42px !important; }
+            .zona-status { padding: 8px 9px; font-size: .82rem; }
+            .zona-status button { margin-left: 0; width: 100%; }
+            .area-detect { padding: 8px 9px; font-size: .82rem; }
+            #promoBtn { padding: 0 10px !important; white-space: nowrap; }
+        }
+    
+        /* Pilihan bagian Surabaya: tombol pil ringkas (tanpa daftar bawaan perangkat) */
+        .kirim-label { font-size: .9rem; font-weight: 600; color: var(--forest, #12362e); }
+        .bagian-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .bag-opt { position: relative; display: inline-block !important; margin: 0 !important; cursor: pointer; }
+        .bag-opt input[type="radio"] { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; cursor: pointer; }
+        .bag-opt span { display: inline-block; padding: 8px 16px; border: 1.4px solid var(--line, #dfe5e0); border-radius: 999px; background: var(--paper, #fff); color: var(--forest, #12362e); font-size: .92rem; font-weight: 500; line-height: 1.2; transition: background .15s, color .15s, border-color .15s; }
+        .bag-opt:hover span { border-color: var(--accent, #4d7f63); }
+        .bag-opt input:checked + span { background: var(--forest, #12362e); border-color: var(--forest, #12362e); color: #fff; font-weight: 600; }
+        .bag-opt input:focus-visible + span { outline: 2px solid var(--accent, #4d7f63); outline-offset: 2px; }
+        .wilayah.is-invalid ~ .kirim-body .bagian-grid { outline: 1.5px solid #c0392b; outline-offset: 4px; border-radius: 8px; }
+
+        /* Ukuran menyesuaikan layar: skala rem mengecil bertahap di HP, bidang isian lebih ringkas. */
+        @media (max-width: 480px) {
+            html { font-size: 15px; }
+            body { font-size: 15px; }
+            .order-container form#orderForm input:not([type="checkbox"]):not([type="radio"]),
+            .order-container form#orderForm select,
+            .order-container form#orderForm textarea { padding: 10px 12px !important; font-size: 16px !important; min-height: 0; }
+            .order-container form#orderForm textarea { line-height: 1.4; }
+            .form-group > label, .wilayah > legend { font-size: .92rem !important; }
+            .order-header h2 { font-size: 1.5rem !important; }
+            .order-header p { font-size: .9rem !important; }
+            .btn-submit { padding: 12px !important; font-size: .98rem !important; }
+            .wilayah .wil-opt { font-size: .95rem; padding: 5px 0; }
+            .wilayah-grid { gap: 2px 22px; flex-direction: row; }
+            .bag-opt span { padding: 7px 13px; font-size: .88rem; }
+            .kirim-body { gap: 11px; margin-top: 8px; }
+            .kirim-hint { font-size: .78rem; }
+            .zona-status { padding: 8px 10px; font-size: .8rem; }
+            .zona-status button { width: auto; padding: 5px 10px; font-size: .8rem; }
+            .area-detect { padding: 8px 10px; font-size: .8rem; }
+            .invoice-row { font-size: .85rem; }
+        }
+        @media (max-width: 360px) {
+            html { font-size: 14px; }
+            .order-header h2 { font-size: 1.35rem !important; }
+            .bag-opt span { padding: 6px 11px; }
+        }
+        @media (min-width: 1600px) { html { font-size: 17px; } }
+    </style>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <meta name="description" content="Pesan susu kambing Saanen segar dari Margaluyu Farm. Bayar COD atau QRIS.">
+    <meta name="theme-color" content="#0a3d38">
+
+
+    
+    
+    
+    <link rel="stylesheet" href="css/fonts.css">
+    <!-- SEO: ganti susukambingsaanensegar354.vercel.app dengan domain Anda (lihat PANDUAN-SUPABASE.md langkah 1) -->
+    <link rel="canonical" href="https://susukambingsaanensegar354.vercel.app/order-sekarang.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Margaluyu Farm">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:url" content="https://susukambingsaanensegar354.vercel.app/order-sekarang.html">
+    <meta property="og:title" content="Order Sekarang - Margaluyu Farm">
+    <meta property="og:description" content="Pesan susu kambing Saanen segar dari Margaluyu Farm. Bayar COD atau QRIS.">
+    <meta property="og:image" content="https://susukambingsaanensegar354.vercel.app/img/banner-home-crop.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Order Sekarang - Margaluyu Farm">
+    <meta name="twitter:description" content="Pesan susu kambing Saanen segar dari Margaluyu Farm. Bayar COD atau QRIS.">
+    <meta name="twitter:image" content="https://susukambingsaanensegar354.vercel.app/img/banner-home-crop.jpg">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#0a3d38">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <link rel="stylesheet" href="css/order-tidy.css">
+    <style>
+        /* ===== Ringkasan Pembayaran: bergaya nota ===== */
+        body .order-container form#orderForm .checkout-side { padding: 22px 22px 20px !important; border: 1px solid #e6dfca !important; border-radius: 14px !important; background: #fff !important; box-shadow: none !important; }
+        body .order-container form#orderForm .checkout-side .checkout-summary-title { margin: 0 0 14px !important; font: 600 .78rem/1.2 ui-monospace, Menlo, Consolas, monospace !important; letter-spacing: .08em; text-transform: uppercase; color: #5b6962 !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box { margin-bottom: 0 !important; }
+        body .order-container form#orderForm .checkout-side .invoice-row { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0 !important; border: 0 !important; border-bottom: 1px dashed #ddd5bd !important; font-size: .95rem; color: #4d5d56; }
+        body .order-container form#orderForm .checkout-side .invoice-row > span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; color: #1f2d28; }
+        body .order-container form#orderForm .checkout-side .invoice-row .rc-muted, body .order-container form#orderForm .checkout-side .rc-muted { font-weight: 400 !important; font-style: italic; color: #8a948e !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row.invoice-total { display: flex; align-items: baseline; justify-content: space-between; margin: 0 !important; padding: 16px 0 6px !important; min-height: 0; border: 0 !important; border-top: 2px solid #1f2d28 !important; border-radius: 0 !important; background: transparent !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:first-child { font: 600 .95rem 'Inter', sans-serif !important; color: #1f2d28 !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:last-child { font: 700 1.9rem/1 'Bricolage Grotesque', 'Inter', sans-serif !important; letter-spacing: -.02em; color: #0a3d38 !important; font-variant-numeric: tabular-nums; }
+        body .order-container form#orderForm .checkout-side .rc-note { margin: 4px 0 18px; font-size: .86rem; line-height: 1.5; color: #6b776f; }
+        body .order-container form#orderForm .checkout-side .btn-submit { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 50px; margin-top: 4px; border-radius: 10px !important; background: #0a3d38; color: #fff; font-size: 1rem !important; font-weight: 600; letter-spacing: .01em; }
+        body .order-container form#orderForm .checkout-side .btn-submit i { display: none; }
+        body .order-container form#orderForm .checkout-side .btn-submit::after { content: "\2192" !important; display: inline !important; font-size: 1.15em; transition: transform .2s ease; }
+        body .order-container form#orderForm .checkout-side .btn-submit:hover::after { transform: translateX(3px); }
+        body .order-container form#orderForm .checkout-side .btn-submit:disabled::after { content: none !important; }
+        body .order-container form#orderForm .checkout-side .invoice-row { align-items: flex-start; }
+        body .order-container form#orderForm .checkout-side .invoice-row > span:first-child { flex: 1 1 auto; min-width: 0; overflow-wrap: normal; word-break: normal; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row > span { width: auto !important; max-width: none !important; word-break: normal !important; overflow-wrap: normal !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row > span:first-child { flex: 1 1 auto; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row > span:last-child { flex: 0 0 auto; white-space: nowrap !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:first-child { flex: 0 1 auto; }
+        .order-container .kirim-body { border-top: 0 !important; padding-top: 0 !important; margin-top: 18px !important; }
+        body .order-container form#orderForm .checkout-side .invoice-row > span:last-child { flex: 0 0 auto; white-space: nowrap; }
+        body .order-container form#orderForm .checkout-side .rc-sub { display: block; margin-top: 2px; font-size: .8rem; font-weight: 400; color: #8a948e; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row.invoice-total { flex-wrap: wrap; align-items: baseline; row-gap: 4px; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:first-child { flex: 0 1 auto; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:last-child { flex: 0 0 auto; margin-left: auto; white-space: nowrap; font-size: clamp(1.55rem, 7vw, 1.95rem) !important; }
+        /* Garis titik-titik penuntun mata (gaya nota): label ..... nilai */
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row:not(.invoice-total) { position: relative; background-image: radial-gradient(circle, #cdc5ae 0.9px, transparent 1.2px); background-size: 7px 3px; background-repeat: repeat-x; background-position: 0 1.05rem; border-bottom: 0 !important; padding: 9px 0 !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row:not(.invoice-total) > span { position: relative; background: #fff; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row:not(.invoice-total) > span:first-child { padding-right: 8px; flex: 0 1 auto; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row:not(.invoice-total) > span:last-child { padding-left: 8px; margin-left: auto; }
+        body .order-container form#orderForm .checkout-side .rc-muted { font-style: normal !important; font-weight: 500 !important; color: #8a948e !important; }
+        body .order-container form#orderForm .checkout-side .rc-sub[hidden] { display: none; }
+    </style>
+    <style>
+        /* ===== Popup transaksi berhasil: fase 1 (centang + nominal) lalu fase 2 (bilah ringkas + struk asli) ===== */
+        .ok { position: fixed; inset: 0; z-index: 9000; display: flex; align-items: flex-end; justify-content: center; background: rgba(10, 30, 27, .62); animation: ok-fade .25s ease-out both; }
+        .ok[hidden] { display: none; }
+        .ok-sheet { position: relative; display: flex; flex-direction: column; width: 100%; max-width: 440px; max-height: 100%; overflow: hidden; background: #f3f0e6; border-radius: 20px 20px 0 0; animation: ok-up .4s cubic-bezier(.2, .8, .2, 1) both; }
+        @media (min-width: 560px) { .ok { align-items: center; padding: 24px; } .ok-sheet { max-height: 94vh; border-radius: 18px; } }
+        @media (max-width: 559px) { .ok-sheet { height: 100%; max-width: none; border-radius: 0; } }
+        .ok-x { position: absolute; top: 10px; right: 10px; z-index: 3; width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: rgba(243, 240, 230, .85); font-size: 22px; line-height: 1; cursor: pointer; }
+        .ok-x:hover { background: rgba(255, 255, 255, .12); }
+        /* fase 1 */
+        .ok-hero { flex: 1 1 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; background: #0a3d38; color: #f3f0e6; text-align: center; transition: opacity .3s ease, transform .3s ease; }
+        .ok-sheet.leaving .ok-hero { opacity: 0; transform: translateY(-10px) scale(.98); }
+        .ok-sheet:not(.intro) .ok-hero { display: none; }
+        .ok-ico { display: block; width: 76px; height: 76px; margin: 0 auto 18px; }
+        .ok-ico svg { width: 100%; height: 100%; overflow: visible; }
+        .ok-ico circle { fill: #f3f0e6; transform-origin: 50% 50%; animation: ok-pop .5s .15s cubic-bezier(.2, .8, .3, 1.3) both; }
+        .ok-ico path { fill: none; stroke: #0a3d38; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 34; stroke-dashoffset: 34; animation: ok-draw .45s .55s cubic-bezier(.5, 0, .2, 1) forwards; }
+        .ok-hero h2 { margin: 0 0 4px; font: 700 1.45rem/1.2 'Bricolage Grotesque', 'Inter', sans-serif; letter-spacing: -.01em; color: #f3f0e6; animation: ok-rise .45s .7s both; }
+        .ok-time { margin: 0 0 18px; font-size: .86rem; opacity: .72; animation: ok-rise .45s .78s both; }
+        .ok-total { margin: 0; font: 700 2.6rem/1 'Bricolage Grotesque', 'Inter', sans-serif; letter-spacing: -.02em; font-variant-numeric: tabular-nums; animation: ok-rise .45s .85s both; }
+        .ok-state { display: inline-flex; align-items: center; gap: 8px; margin: 16px 0 0; font-size: .84rem; color: rgba(243, 240, 230, .9); animation: ok-rise .45s 1s both; }
+        .ok-state::before, .ok-bar-state::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #9fd8ac; flex: 0 0 auto; }
+        .ok-state.wait::before, .ok-bar-state.wait::before { background: #d9a441; animation: ok-pulse 1.4s ease-in-out infinite; }
+        .ok-state.warn::before, .ok-bar-state.warn::before { background: #d9a441; }
+        .ok-skip { margin-top: 26px; padding: 8px 14px; border: 0; background: transparent; color: rgba(243, 240, 230, .7); font: 500 .84rem 'Inter', sans-serif; cursor: pointer; animation: ok-rise .45s 1.4s both; }
+        /* fase 2 */
+        .ok-bar { display: none; flex: 0 0 auto; align-items: center; gap: 12px; padding: 14px 52px 14px 16px; background: #0a3d38; color: #f3f0e6; }
+        .ok-sheet:not(.intro) .ok-bar { display: flex; animation: ok-rise .35s both; }
+        .ok-mini { flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%; background: #f3f0e6; display: grid; place-items: center; }
+        .ok-mini svg { width: 16px; height: 16px; fill: none; stroke: #0a3d38; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+        .ok-bar-t { flex: 1 1 auto; min-width: 0; }
+        .ok-bar-t b { display: block; font: 700 .98rem/1.2 'Inter', sans-serif; }
+        .ok-bar-state { display: flex; align-items: center; gap: 6px; margin-top: 2px; font-size: .76rem; color: rgba(243, 240, 230, .82); }
+        .ok-bar-state::before { width: 6px; height: 6px; }
+        .ok-bar-amt { flex: 0 0 auto; font: 700 1.2rem/1 'Bricolage Grotesque', 'Inter', sans-serif; font-variant-numeric: tabular-nums; }
+        .ok-body { display: none; flex: 1 1 auto; overflow: auto; padding: 18px 16px 8px; background: #f3f0e6; -webkit-overflow-scrolling: touch; }
+        .ok-sheet:not(.intro) .ok-body { display: block; animation: ok-rise .45s .08s both; }
+        .ok-receipt { position: relative; max-width: 300px; margin: 0 auto; filter: drop-shadow(0 8px 18px rgba(31, 45, 40, .13)); }
+        .ok-receipt canvas { display: block; width: 100%; height: auto; }
+        .ok-receipt.loading { min-height: 300px; }
+        .ok-receipt.loading::after { content: 'Menyiapkan struk...'; position: absolute; inset: 0; display: grid; place-items: center; font-size: .88rem; color: #5b6962; }
+        .ok-receipt .ok-err { padding: 24px 16px; font-size: .86rem; line-height: 1.5; color: #7a5307; background: #fbf4e1; text-align: center; border-radius: 8px; }
+        .ok-info { max-width: 300px; margin: 14px auto 0; padding: 0 2px; font-size: .84rem; line-height: 1.55; color: #5b6962; }
+        .ok-info[hidden], .ok-info [hidden] { display: none; }
+        .ok-diag { margin: 0 0 10px; padding: 10px 12px; border-left: 3px solid #d9a441; background: #fbf4e1; color: #5d4710; border-radius: 0 6px 6px 0; }
+        .ok-info .row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; }
+        .ok-wa-note { margin: 6px 0 0; font-size: .78rem; line-height: 1.5; color: #5b6962; }
+        .ok-link { padding: 0; border: 0; background: none; font: 600 .86rem 'Inter', sans-serif; color: #0a3d38; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+        .ok-code { margin: 8px 0 0; font: .72rem/1.5 ui-monospace, Menlo, Consolas, monospace; color: #8a948e; overflow-wrap: anywhere; }
+        .ok-foot { display: none; flex: 0 0 auto; padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); border-top: 1px solid #e3dcc6; background: #f3f0e6; }
+        .ok-sheet:not(.intro) .ok-foot { display: block; animation: ok-rise .45s .15s both; }
+        .ok-btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; border-radius: 10px; font: 600 .98rem 'Inter', sans-serif; text-decoration: none; cursor: pointer; }
+        .ok-btn.p { border: 0; background: #0a3d38; color: #fff; }
+        .ok-btn.s { border: 1.5px solid #0a3d38; background: transparent; color: #0a3d38; }
+        .ok-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .ok-btn:focus-visible, .ok-x:focus-visible, .ok-link:focus-visible, .ok-skip:focus-visible { outline: 3px solid #d9a441; outline-offset: 2px; }
+        @keyframes ok-fade { from { opacity: 0; } }
+        @keyframes ok-up { from { transform: translateY(40px); opacity: 0; } }
+        @keyframes ok-pop { from { transform: scale(.3); opacity: 0; } }
+        @keyframes ok-draw { to { stroke-dashoffset: 0; } }
+        @keyframes ok-rise { from { opacity: 0; transform: translateY(8px); } }
+        @keyframes ok-pulse { 50% { opacity: .3; } }
+        @media (prefers-reduced-motion: reduce) { .ok, .ok-sheet, .ok-ico circle, .ok-hero *, .ok-bar, .ok-body, .ok-foot { animation: none !important; transition: none !important; } .ok-ico path { animation: none; stroke-dashoffset: 0; } }
+    </style>
+    <style>
+        /* ===== Rancangan akhir v3: satu bahasa visual (eyebrow bergaris, baris pilihan berikon, nota) ===== */
+        /* Judul bagian: eyebrow monospasi dengan garis penuntun */
+        body .order-container h3.grp, body .order-container #grpBayar.grp { display: flex; align-items: center; gap: 14px; margin: 30px 0 14px !important; padding: 0 !important; border: 0 !important; font: 600 .72rem/1.2 ui-monospace, Menlo, Consolas, monospace !important; letter-spacing: .14em; text-transform: uppercase; color: #5b6962 !important; }
+        body .order-container h3.grp::after { content: none !important; }
+        body .order-container h3.grp::before { content: none !important; }
+        body .order-container .checkout-main > .form-group:first-of-type { margin-top: 4px; }
+
+        /* Baris pilihan */
+        body .order-container .wilayah-grid, body .order-container .payment-options { display: block !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-bottom: 1px solid #e6dfca !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; overflow: visible !important; }
+        body .order-container .bagian-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; margin: 0 !important; padding: 0 !important; border: 0 !important; border-bottom: 1px solid #e6dfca !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+        body .order-container .wilayah .wil-opt, body .order-container .bag-opt, body .order-container .payment-options .payment-option, body .order-container .payment-options .payment-option + .payment-option { position: relative; display: block !important; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; cursor: pointer; min-height: 0 !important; }
+        body .order-container .payment-options .payment-option::before, body .order-container .payment-options .payment-option::after { content: none !important; }
+        body .order-container .payment-options .payment-option:has(input:checked), body .order-container .payment-options .payment-option:hover { background: transparent !important; box-shadow: none !important; border: 0 !important; outline: 0 !important; }
+        body .order-container .wil-opt input[type="radio"], body .order-container .bag-opt input[type="radio"], body .order-container .payment-option input[type="radio"] { position: absolute !important; inset: 0; width: 100% !important; height: 100% !important; margin: 0 !important; opacity: 0; cursor: pointer; }
+        body .order-container .wil-opt span, body .order-container .bag-opt span, body .order-container .payment-option span { display: grid !important; grid-template-columns: minmax(0, 1fr) 16px; align-items: center; align-content: center; column-gap: 12px; min-height: 44px; padding: 0 !important; border: 0 !important; border-top: 1px solid #e6dfca !important; border-radius: 0 !important; background: transparent !important; color: #2a3a34 !important; font-size: .95rem !important; font-weight: 500 !important; line-height: 1.3; text-align: left !important; transition: color .15s ease; }
+        /* baris besar berikon: area pengiriman dan metode pembayaran */
+        body .order-container .wil-opt span, body .order-container .payment-option span { grid-template-columns: 38px minmax(0, 1fr) 16px; column-gap: 14px; min-height: 60px; padding: 11px 0 !important; row-gap: 1px; }
+        body .order-container .wil-opt span::before, body .order-container .payment-option span::before { content: ''; grid-column: 1; grid-row: 1 / span 2; width: 38px; height: 38px; border-radius: 10px; background-color: #ece6d4; background-position: center; background-repeat: no-repeat; background-size: 20px; transition: background-color .15s ease; }
+        body .order-container .wil-opt span b, body .order-container .payment-option span b { grid-column: 2; font-weight: 600; font-size: .98rem; align-self: end; }
+        body .order-container .wil-opt span small, body .order-container .payment-option span small { grid-column: 2; align-self: start; font-size: .8rem; font-weight: 400; color: #6b776f !important; }
+        body .order-container .wil-opt span::after, body .order-container .payment-option span::after { grid-column: 3; }
+        body .order-container .wil-opt input:checked + span::before, body .order-container .payment-option input:checked + span::before { background-color: #0a3d38; }
+        body .order-container .bag-opt span { min-height: 42px; font-size: .95rem !important; }
+        /* tanda centang di kanan untuk pilihan aktif */
+        body .order-container .wil-opt span::after, body .order-container .bag-opt span::after, body .order-container .payment-option span::after { content: ''; grid-row: 1 / span 2; justify-self: end; width: 6px; height: 11px; margin: -3px 3px 0 0; border: solid #0a3d38; border-width: 0 2px 2px 0; transform: rotate(45deg); opacity: 0; transition: opacity .15s ease; }
+        body .order-container .bag-opt span::after { grid-column: 2; }
+        body .order-container .wil-opt input:checked + span, body .order-container .bag-opt input:checked + span, body .order-container .payment-option input:checked + span { color: #0a3d38 !important; font-weight: 700 !important; background: transparent !important; border-color: #e6dfca !important; }
+        body .order-container .wil-opt input:checked + span::after, body .order-container .bag-opt input:checked + span::after, body .order-container .payment-option input:checked + span::after { opacity: 1; }
+        body .order-container .wil-opt:hover input:not(:checked) + span, body .order-container .bag-opt:hover input:not(:checked) + span, body .order-container .payment-option:hover input:not(:checked) + span { color: #0a3d38 !important; background: transparent !important; }
+        body .order-container .wil-opt input:disabled + span, body .order-container .bag-opt input:disabled + span { opacity: .4; cursor: not-allowed; }
+        body .order-container .wil-opt input:focus-visible + span, body .order-container .bag-opt input:focus-visible + span, body .order-container .payment-option input:focus-visible + span { outline: 2px solid #d9a441; outline-offset: -2px; }
+        body .order-container .payment-option span small, body .order-container .payment-option:has(input:checked) small { color: #6b776f !important; }
+        body .order-container .wil-opt:nth-child(1) span::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6962' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-7-5.2-7-11a7 7 0 0114 0c0 5.8-7 11-7 11z'/%3E%3Ccircle cx='12' cy='10' r='2.5'/%3E%3C/svg%3E"); }
+        body .order-container .wil-opt:nth-child(1) input:checked + span::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-7-5.2-7-11a7 7 0 0114 0c0 5.8-7 11-7 11z'/%3E%3Ccircle cx='12' cy='10' r='2.5'/%3E%3C/svg%3E"); }
+        body .order-container .wil-opt:nth-child(2) span::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6962' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.5h11v9h-11z'/%3E%3Cpath d='M13.5 9.5h4l3 3v3h-7z'/%3E%3Ccircle cx='7' cy='17.5' r='1.8'/%3E%3Ccircle cx='17' cy='17.5' r='1.8'/%3E%3C/svg%3E"); }
+        body .order-container .wil-opt:nth-child(2) input:checked + span::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.5h11v9h-11z'/%3E%3Cpath d='M13.5 9.5h4l3 3v3h-7z'/%3E%3Ccircle cx='7' cy='17.5' r='1.8'/%3E%3Ccircle cx='17' cy='17.5' r='1.8'/%3E%3C/svg%3E"); }
+        body .order-container .payment-option:nth-child(1) span::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6962' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='6' width='18' height='12' rx='2'/%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3Cpath d='M6.5 12h.01M17.5 12h.01'/%3E%3C/svg%3E"); }
+        body .order-container .payment-option:nth-child(1) input:checked + span::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='6' width='18' height='12' rx='2'/%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3Cpath d='M6.5 12h.01M17.5 12h.01'/%3E%3C/svg%3E"); }
+        body .order-container .payment-option:nth-child(2) span::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6962' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='4' width='6' height='6' rx='1'/%3E%3Crect x='14' y='4' width='6' height='6' rx='1'/%3E%3Crect x='4' y='14' width='6' height='6' rx='1'/%3E%3Cpath d='M14 14h2v2h-2zM18 14h2M14 18h2M18 18h2v2h-2z'/%3E%3C/svg%3E"); }
+        body .order-container .payment-option:nth-child(2) input:checked + span::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='4' width='6' height='6' rx='1'/%3E%3Crect x='14' y='4' width='6' height='6' rx='1'/%3E%3Crect x='4' y='14' width='6' height='6' rx='1'/%3E%3Cpath d='M14 14h2v2h-2zM18 14h2M14 18h2M18 18h2v2h-2z'/%3E%3C/svg%3E"); }
+        body .order-container .form-group > label::before, body .order-container .wilayah > legend::before { content: none !important; display: none !important; }
+        body .order-container .form-group > label, body .order-container .wilayah > legend { padding: 0 !important; margin: 0 0 8px !important; }
+        body .order-container .wilayah > legend { margin-bottom: 4px !important; }
+        body .order-container #bagianRow { margin-top: 20px; padding: 0; border: 0; background: transparent; }
+        body .order-container #bagianRow .kirim-label { display: block; margin: 0 0 4px; font-size: .92rem !important; font-weight: 600 !important; color: #0a3d38 !important; }
+        body .order-container #bagianRow .kirim-hint { display: block; margin-top: 10px; font-size: .82rem; text-align: left; color: #6b776f; }
+        body .order-container #bagianRow .kirim-hint:empty { display: none; }
+        body .order-container .kirim-body { border-top: 0 !important; padding-top: 0 !important; margin-top: 18px !important; }
+        @media (prefers-reduced-motion: reduce) { body .order-container .wil-opt span, body .order-container .bag-opt span, body .order-container .payment-option span, body .order-container span::before, body .order-container span::after { transition: none !important; } }
+
+        /* Kode promo: satu baris, tombol ringkas */
+        body .order-container .promo-line { display: flex !important; flex-direction: row !important; align-items: stretch; gap: 8px; }
+        body .order-container .promo-line input { flex: 1 1 auto; min-width: 0; height: 42px; }
+        body .order-container .btn-promo, body .order-container #promoBtn { flex: 0 0 auto; width: auto !important; min-height: 0 !important; height: 42px; padding: 0 16px !important; border-radius: 10px; font-size: .88rem !important; font-weight: 600; white-space: nowrap; }
+        body .order-container #promoMsg { font-size: .82rem; }
+
+        /* Ringkasan: nota di akhir formulir (tanpa kartu) */
+        body .order-container form#orderForm .checkout-side { margin-top: 30px; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+        body .order-container form#orderForm .checkout-side .checkout-summary-title { display: flex; align-items: center; gap: 14px; margin: 0 0 6px !important; font: 600 .72rem/1.2 ui-monospace, Menlo, Consolas, monospace !important; letter-spacing: .14em; text-transform: uppercase; color: #5b6962 !important; }
+        body .order-container form#orderForm .checkout-side .checkout-summary-title::after { content: ''; flex: 1; height: 1px; background: #d9d1b8; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row:not(.invoice-total) { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 12px 0 !important; border: 0 !important; border-bottom: 1px solid #e6dfca !important; background: none !important; font-size: .94rem; line-height: 1.35; color: #2a3a34; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row:not(.invoice-total) > span { background: transparent !important; padding: 0 !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row > span:first-child { flex: 1 1 auto; min-width: 0; width: auto !important; max-width: none !important; word-break: normal !important; overflow-wrap: anywhere; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row > span:last-child { flex: 0 0 auto; width: auto !important; max-width: none !important; margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; color: #1f2d28; white-space: nowrap !important; }
+        body .order-container form#orderForm .checkout-side .rc-muted { font-style: normal !important; font-weight: 400 !important; color: #8a948e !important; }
+        body .order-container form#orderForm .checkout-side .rc-sub { display: block; margin-top: 2px; font-size: .78rem; font-weight: 400; color: #8a948e; }
+        body .order-container form#orderForm .checkout-side .rc-sub[hidden] { display: none; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row.invoice-total { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 0 !important; padding: 16px 0 14px !important; border: 0 !important; background: transparent !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total > span { width: auto !important; max-width: none !important; background: transparent !important; word-break: normal !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:first-child { font: 600 .95rem 'Inter', sans-serif !important; color: #1f2d28 !important; flex: 1 1 auto; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:last-child { font: 700 clamp(1.55rem, 6.4vw, 1.95rem)/1 'Bricolage Grotesque', 'Inter', sans-serif !important; letter-spacing: -.025em; color: #0a3d38 !important; margin-left: auto; white-space: nowrap; flex: 0 0 auto; }
+        body .order-container form#orderForm .checkout-side .rc-note { margin: 0 0 14px; padding-top: 12px; border-top: 2px solid #1f2d28; font-size: .8rem; line-height: 1.5; color: #6b776f; }
+        body .order-container form#orderForm .checkout-side .btn-submit { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 48px !important; margin-top: 2px; padding: 0 16px; border-radius: 10px !important; font-size: .96rem !important; font-weight: 600; }
+        body .order-container form#orderForm .checkout-side .btn-submit i { display: none; }
+        body .order-container form#orderForm .checkout-side .btn-submit::after { content: "\2192" !important; display: inline !important; font-size: 1.1em; transition: transform .2s ease; }
+        body .order-container form#orderForm .checkout-side .btn-submit:hover::after { transform: translateX(3px); }
+        body .order-container form#orderForm .checkout-side .btn-submit:disabled::after { content: none !important; }
+
+        /* Tombol popup transaksi: ringkas */
+        .ok-btn { min-height: 42px; border-radius: 9px; font-size: .92rem; }
+        .ok-foot { padding: 12px 16px calc(14px + env(safe-area-inset-bottom)); }
+        .ok-row2 { gap: 8px; margin-top: 8px; }
+    </style>
+    <style>
+        /* ===== Pembayaran QRIS di formulir order ===== */
+        body .order-container .qris-box { margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; box-shadow: none !important; }
+        .qpay { margin-top: 18px; padding-top: 14px; border-top: 1px solid #d9d1b8; }
+        .qpay-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+        .qpay-head b { font-size: 1rem; color: #0a3d38; }
+        .qpay-head span { font: 600 .7rem/1.2 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; color: #8a6a14; }
+        .qpay.is-paid .qpay-head span { color: #1e6a3c; }
+        .qpay-code { position: relative; width: 200px; max-width: 100%; margin: 0 auto 10px; }
+        .qpay-code img { display: block; width: 100%; height: auto; padding: 6px; border: 1px solid #d9d1b8; border-radius: 6px; background: #fff; transition: filter .25s ease; }
+        .qpay.is-locked .qpay-code img { filter: blur(7px) grayscale(.4); }
+        .qpay-lock { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; padding: 18px; border-radius: 6px; background: rgba(250, 246, 234, .82); color: #3f4f48; font-size: .84rem; line-height: 1.45; text-align: center; }
+        .qpay.is-locked .qpay-lock { display: flex; }
+        .qpay-link { padding: 0; border: 0; background: none; font: 600 .86rem 'Inter', sans-serif; color: #0a3d38; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+        .qpay-dl { display: block; width: max-content; margin: 0 auto 6px; }
+        .qpay.is-locked .qpay-dl { pointer-events: none; opacity: .4; }
+        .qpay-steps { margin: 12px 0 0; padding: 0; list-style: none; counter-reset: q; }
+        .qpay-steps li { counter-increment: q; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: baseline; gap: 6px; padding: 10px 0; border-top: 1px solid #e6dfca; font-size: .9rem; line-height: 1.45; color: #3f4f48; text-align: left; }
+        .qpay-steps li::before { content: counter(q, decimal-leading-zero); font: 500 .74rem ui-monospace, Menlo, Consolas, monospace; color: #8a948e; }
+        .qpay-steps li strong { font-variant-numeric: tabular-nums; color: #0a3d38; }
+        .qpay-proof { margin-top: 4px; padding-top: 14px; border-top: 1px solid #e6dfca; }
+        .qpay-hint { margin: 10px 0 0; font-size: .8rem; line-height: 1.5; color: #6b776f; text-align: left; }
+        .qpay-err[hidden] { display: none; }
+        .qpay-err { margin: 8px 0 0; font-size: .82rem; color: #a8271f; text-align: left; }
+        body .order-container form#orderForm .checkout-side .btn-submit:disabled { background: #b9c3be !important; color: #fff !important; cursor: not-allowed; }
+        body .order-container form#orderForm .checkout-side .btn-submit:disabled::after { content: none !important; }
+        .qpay-link:focus-visible { outline: 2px solid #d9a441; outline-offset: 2px; border-radius: 4px; }
+    </style>
+    <style>
+        /* ===== v4: opsi pilihan bergaya item terpilih, ringkasan bergaya kertas nota, unggah bukti ringkas ===== */
+        body .order-container .wilayah-grid, body .order-container .payment-options { display: grid !important; gap: 10px; margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+        body .order-container .bagian-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; box-shadow: none !important; }
+        body .order-container .wil-opt span, body .order-container .payment-option span { border: 1px solid #e0d7bf !important; border-radius: 12px !important; background: #fffdf8 !important; padding: 12px 14px !important; min-height: 62px; transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease; }
+        body .order-container .bag-opt span { grid-template-columns: minmax(0, 1fr) 16px; border: 1px solid #e0d7bf !important; border-radius: 10px !important; background: #fffdf8 !important; padding: 0 14px !important; min-height: 44px; transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease; }
+        body .order-container .wil-opt:hover input:not(:checked) + span, body .order-container .bag-opt:hover input:not(:checked) + span, body .order-container .payment-option:hover input:not(:checked) + span { border-color: #b3a77f !important; background: #fffdf8 !important; }
+        body .order-container .wil-opt input:checked + span, body .order-container .bag-opt input:checked + span, body .order-container .payment-option input:checked + span { border-color: #0a3d38 !important; background: #f0f5f1 !important; box-shadow: 0 0 0 1px #0a3d38; }
+        body .order-container .wil-opt span::after, body .order-container .bag-opt span::after, body .order-container .payment-option span::after { margin: -3px 2px 0 0; }
+        body .order-container .wil-opt input:focus-visible + span, body .order-container .bag-opt input:focus-visible + span, body .order-container .payment-option input:focus-visible + span { outline: 2px solid #d9a441; outline-offset: 2px; }
+        body .order-container .bagian-grid { margin-bottom: 2px !important; }
+
+        /* QRIS: nominal + unggah bukti ringkas (tanpa teks langkah) */
+        .qpay { margin-top: 16px; padding-top: 0; border-top: 0; }
+        .qpay-head { margin-bottom: 12px; }
+        .qpay-code { width: 180px; margin-bottom: 8px; }
+        .qpay-amount { display: flex; align-items: baseline; gap: 10px; padding: 12px 0; border-top: 1px dashed #cfc7ad; border-bottom: 1px dashed #cfc7ad; }
+        .qpay-amount span { flex: 1 1 auto; font-size: .86rem; color: #5b6962; }
+        .qpay-amount strong { font: 700 1.05rem ui-monospace, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; color: #0a3d38; }
+        .qpay-proof { margin-top: 12px; padding-top: 0; border-top: 0; }
+
+        /* Ringkasan: kertas nota bergerigi, mengulang gaya struk */
+        body .order-container form#orderForm .checkout-side { margin-top: 28px; padding: 0 !important; border: 0 !important; background: transparent !important; box-shadow: none !important; }
+        .rc-paper { position: relative; isolation: isolate; padding: 18px 18px 28px; filter: drop-shadow(0 8px 16px rgba(31, 45, 40, .10)); margin-bottom: 14px; }
+        .rc-paper::before { content: ''; position: absolute; inset: 0; z-index: -1; background: #fff; border-radius: 8px 8px 0 0; -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%; mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%; }
+        body .order-container form#orderForm .checkout-side .checkout-summary-title { justify-content: center; margin: 0 0 12px !important; padding-bottom: 12px; border-bottom: 1px dashed #cfc7ad; text-align: center; }
+        body .order-container form#orderForm .checkout-side .checkout-summary-title::after { content: none; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row:not(.invoice-total) { padding: 8px 0 !important; border: 0 !important; font-size: .9rem; color: #5b6962; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row:not(.invoice-total) > span:first-child { color: #1f2d28; font-weight: 500; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row > span:last-child { font: 500 .9rem ui-monospace, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; color: #1f2d28; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-row.invoice-total { margin-top: 6px !important; padding: 14px 0 0 !important; border-top: 1px dashed #cfc7ad !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:first-child { font: 700 1rem 'Inter', sans-serif !important; }
+        body .order-container form#orderForm .checkout-side .invoice-box .invoice-total span:last-child { font: 700 clamp(1.4rem, 6vw, 1.7rem)/1 ui-monospace, Menlo, Consolas, monospace !important; letter-spacing: -.02em; color: #0a3d38 !important; }
+        body .order-container form#orderForm .checkout-side .rc-note { margin: 0 0 14px; padding-top: 0; border-top: 0; font-size: .8rem; text-align: left; }
+        body .order-container form#orderForm .checkout-side .btn-submit { min-height: 46px !important; font-size: .95rem !important; }
+    </style>
+    <style>
+        /* ===== v5: pilihan sebagai daftar bergaris dengan pita sorot (tanpa kartu), popup tanpa kotak ===== */
+        body .order-container .wilayah-grid, body .order-container .payment-options { gap: 0 !important; border-bottom: 1px solid #e6dfca !important; }
+        body .order-container .bagian-grid { gap: 0 24px !important; border-bottom: 1px solid #e6dfca !important; }
+        body .order-container .wil-opt span, body .order-container .payment-option span, body .order-container .bag-opt span {
+            border: 0 !important; border-radius: 0 !important; box-shadow: none !important; background-color: transparent !important;
+            background-image: linear-gradient(#e6dfca, #e6dfca) !important; background-repeat: no-repeat !important; background-position: 12px 0 !important; background-size: calc(100% - 24px) 1px !important; }
+        body .order-container .wil-opt span, body .order-container .payment-option span { margin: 0 -12px !important; padding: 13px 12px !important; min-height: 66px; }
+        body .order-container .bag-opt span { margin: 0 -10px !important; padding: 0 10px !important; min-height: 46px; background-position: 10px 0 !important; background-size: calc(100% - 20px) 1px !important; }
+        body .order-container .wil-opt input:checked + span, body .order-container .bag-opt input:checked + span, body .order-container .payment-option input:checked + span { background-color: #ecf3ed !important; box-shadow: none !important; border: 0 !important; }
+        body .order-container .wil-opt:hover input:not(:checked) + span, body .order-container .bag-opt:hover input:not(:checked) + span, body .order-container .payment-option:hover input:not(:checked) + span { background-color: #f5f0e1 !important; border: 0 !important; }
+        body .order-container .wil-opt span::before, body .order-container .payment-option span::before { width: 40px; height: 40px; background-size: 21px; }
+        body .order-container .wil-opt span, body .order-container .payment-option span { grid-template-columns: 40px minmax(0, 1fr) 16px; }
+        body .order-container .wil-opt input:focus-visible + span, body .order-container .bag-opt input:focus-visible + span, body .order-container .payment-option input:focus-visible + span { outline: 2px solid #d9a441; outline-offset: -2px; }
+
+        /* QRIS: gambar sedikit lebih besar */
+        .qpay-code { width: 224px; }
+
+        /* Popup: aksi sekunder berupa teks (tanpa kotak) */
+        .ok-row2 { display: flex !important; align-items: center; justify-content: center; gap: 0; margin-top: 4px; }
+        .ok-act { flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: 6px; height: 42px; padding: 0; border: 0; background: transparent; color: #0a3d38; font: 600 .9rem 'Inter', sans-serif; text-decoration: none; cursor: pointer; }
+        .ok-act:hover { text-decoration: underline; text-underline-offset: 3px; }
+        .ok-act:focus-visible { outline: 2px solid #d9a441; outline-offset: -2px; border-radius: 6px; }
+        #okSave::before { content: '\2193'; font-size: 1rem; line-height: 1; }
+        .ok-sep { flex: 0 0 1px; height: 18px; background: #d9d1b8; }
+        .ok-foot { padding-top: 12px; }
+        .ok-info .row { gap: 6px 16px; }
+    </style>
+    <link rel="stylesheet" href="css/voucher.css">
+    <link rel="stylesheet" href="css/order-pro.css">
+    <link rel="stylesheet" href="css/dropdown.css">
+    <link rel="stylesheet" href="css/navpill.css">
+    <link rel="stylesheet" href="css/motion.css">
+    <script src="navpill.js" defer></script>
+    <script src="motion.js" defer></script>
+    <link rel="stylesheet" href="css/refine.css">
+    <link rel="stylesheet" href="css/polish.css">
+    <link rel="stylesheet" href="css/file-picker.css">
+    <script src="refine.js" defer></script>
+</head>
+
+<body>
+
+    <!-- header -->
+    <header class="site-top">
+        <div class="container">
+            <h1 class="brand"><a href="index.html"><img class="brand-mark" src="img/logo-mark.png" alt="" width="34"
+                        height="34"><span class="brand-name">Margaluyu Farm</span></a></h1>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Buka atau tutup menu">
+            <label for="nav-toggle" class="nav-toggle-label"
+                aria-hidden="true"><span></span><span></span><span></span></label>
+            <label for="nav-toggle" class="menu-backdrop" aria-hidden="true"></label>
+            <nav class="menu-panel" aria-label="Menu utama">
+                <div class="menu-head"><a class="menu-brand" href="index.html"><img src="img/logo-mark.png" alt=""
+                            width="26" height="26">Margaluyu Farm</a><label for="nav-toggle" class="menu-close"
+                        aria-label="Tutup menu"><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M6 6l12 12M18 6L6 18" />
+                        </svg></label></div>
+                <a class="menu-link" style="--i:1" href="index.html"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 11l9-8 9 8M5 9.5V20h5v-6h4v6h5V9.5"/></svg></span><span class="ml-t">Beranda</span><span
+                        class="ml-s">Susu Saanen segar</span></a>
+                <a class="menu-link" style="--i:2" href="product.html"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M6 7h12l1 13H5L6 7zM9 7V6a3 3 0 016 0v1"/></svg></span><span class="ml-t">Produk</span><span
+                        class="ml-s">Harga dan detail</span></a>
+                <a class="menu-link" style="--i:3" href="lacak-pesanan.html"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span><span class="ml-t">Order Tracking</span><span class="ml-s">Cek status pesanan</span></a>
+                <a class="menu-link" style="--i:4" href="contact.html"><span class="np-ico" aria-hidden="true"><svg class="np-wa-svg" viewBox="0 0 24 24" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span><span class="ml-t">Hubungi Kami</span><span
+                        class="ml-s">WhatsApp dan kontak</span></a>
+                <div class="menu-foot">
+                    <a class="menu-cta" href="https://wa.me/62895635067289?text=Halo%20Margaluyu%20Farm%2C%20saya%20ingin%20bertanya%20soal%20pesanan" target="_blank" rel="noopener"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="8.5" cy="20" r="1.2"/><circle cx="17.5" cy="20" r="1.2"/><path d="M2.5 3h2.6l2.4 11.5a2 2 0 0 0 2 1.6h8a2 2 0 0 0 2-1.5L21 7H6"/></svg></span><span class="np-label">Tanya lewat WhatsApp</span></a>
+                </div>
+                <p class="menu-note">0895-6350-67289<br>Surabaya, Jawa Timur</p>
+            </nav>
+            <a class="np-wa" href="https://wa.me/62895635067289?text=Halo%20Margaluyu%20Farm%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener" aria-label="Tanya lewat WhatsApp"><span class="np-ico" aria-hidden="true"><svg class="np-wa-svg" viewBox="0 0 24 24" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span></a>
+        </div>
+    </header>
+    <!-- Konten utama: Formulir Pemesanan -->
+    <section class="order-section">
+        <div class="container">
+            <div class="order-container">
+                <div class="order-header rv" id="orderHeader">
+                    <div class="icon-farm"><i class="fas fa-seedling" aria-hidden="true"></i></div>
+                    <h2>Form Pemesanan</h2>
+                    <p>Isi formulir di bawah ini untuk memesan produk susu kambing Saanen kami. Setiap pesanan akan
+                        mendapat nomor pesanan yang bisa dilacak statusnya kapan saja.</p>
+                </div>
+                <div id="stokBanner" class="notice" role="status" hidden></div>
+                <form id="orderForm" novalidate data-stagger>
+                <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"><label>Jangan diisi<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+                                        <div class="checkout-main">
+<div class="form-group rv">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" name="nama" placeholder="Contoh: Fulan" required>
+                    </div>
+                    <div class="form-group rv">
+                        <label for="telepon">No. HP</label>
+                        <input type="tel" id="telepon" name="telepon" placeholder="Contoh: 081234567890" required>
+                    </div>
+                    <div class="form-group rv address-delivery-group">
+                        <fieldset class="opt-set" id="wilayah">
+                            <legend>Area pengiriman</legend>
+                            <div class="opt-grid opt-grid--2">
+                                <label class="opt-card">
+                                    <input type="radio" name="wilayah" value="surabaya">
+                                    <span class="oc-body">
+                                        <span class="oc-ico" aria-hidden="true"><i class="fas fa-map-marker-alt"></i></span>
+                                        <span class="oc-txt"><b>Surabaya</b><small>Pilih bagian kota</small></span>
+                                        <span class="oc-tick" aria-hidden="true"><i class="fas fa-check"></i></span>
+                                    </span>
+                                </label>
+                                <label class="opt-card">
+                                    <input type="radio" name="wilayah" value="luar">
+                                    <span class="oc-body">
+                                        <span class="oc-ico" aria-hidden="true"><i class="fas fa-route"></i></span>
+                                        <span class="oc-txt"><b>Luar Surabaya</b><small>Isi kota atau kabupaten</small></span>
+                                        <span class="oc-tick" aria-hidden="true"><i class="fas fa-check"></i></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <div class="kirim-body" id="kirimBody" hidden>
+                            <input type="hidden" id="alamat" name="alamat">
+                            <div class="kirim-field" id="bagianRow" hidden>
+                                <span class="kirim-label" id="bagianLbl">Bagian Surabaya</span>
+                                <div class="seg-grid" role="radiogroup" aria-labelledby="bagianLbl">
+                                    <label class="seg-chip"><input type="radio" name="bagianR" value="timur"><span><i class="fas fa-arrow-right" aria-hidden="true"></i>Timur</span></label>
+                                    <label class="seg-chip"><input type="radio" name="bagianR" value="pusat"><span><i class="fas fa-bullseye" aria-hidden="true"></i>Pusat</span></label>
+                                    <label class="seg-chip"><input type="radio" name="bagianR" value="barat"><span><i class="fas fa-arrow-left" aria-hidden="true"></i>Barat</span></label>
+                                    <label class="seg-chip"><input type="radio" name="bagianR" value="utara"><span><i class="fas fa-arrow-up" aria-hidden="true"></i>Utara</span></label>
+                                    <label class="seg-chip"><input type="radio" name="bagianR" value="selatan"><span><i class="fas fa-arrow-down" aria-hidden="true"></i>Selatan</span></label>
+                                </div>
+                                <input type="hidden" id="bagian" value="">
+                                <small class="kirim-hint" id="bagianHint"></small>
+                            </div>
+                            <div class="kirim-field" id="kotaRow" hidden>
+                                <label for="kota">Kota / Kabupaten</label>
+                                <input type="text" id="kota" maxlength="60" list="daftarKota" autocomplete="off" placeholder="Contoh: Sidoarjo">
+                                <datalist id="daftarKota"></datalist>
+                            </div>
+                            <div class="area-detect" id="areaDetect" role="status" aria-live="polite" hidden>
+                                <span id="areaDetectText"></span>
+                                <button type="button" id="areaChange" hidden>Ubah</button>
+                            </div>
+                            <div class="kirim-field">
+                                <label for="alamatJalan">Alamat lengkap</label>
+                                <textarea id="alamatJalan" rows="2" maxlength="180" autocomplete="street-address" placeholder="Nama jalan, nomor rumah, RT/RW, kelurahan"></textarea>
+                            </div>
+                            <p class="kirim-tip" id="ongkirTip" hidden></p>
+                            <div class="kirim-field">
+                                <label for="patokan">Patokan lokasi <small>(opsional)</small></label>
+                                <input type="text" id="patokan" maxlength="120" autocomplete="off" placeholder="Dekat masjid atau gang sebelah ...">
+                            </div>
+                        </div>
+                        <select id="zona" name="zona" hidden aria-hidden="true" tabindex="-1"><option value="">Memuat area...</option></select>
+                        <div class="zona-status" id="zonaStatus" role="alert" hidden>
+                            <span id="zonaStatusText">Data tarif belum dapat dimuat.</span>
+                            <button type="button" id="zonaRetry">Muat ulang</button>
+                            <a id="zonaWA" href="https://wa.me/62895635067289" target="_blank" rel="noopener" hidden>Pesan lewat WhatsApp</a>
+                        </div>
+                    </div>
+                    <div class="form-group rv">
+                        <label for="tanggalKirim">Tanggal Pengiriman <small>(opsional)</small></label>
+                        <input type="date" id="tanggalKirim" name="tanggalKirim">
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <label for="produk">Produk</label>
+                        <select id="produk" name="produk" required>
+                            <option value="">Pilih produk</option>
+                            <option value="Susu Kambing Saanen 500ml" data-price="20000" selected>Susu Kambing Saanen
+                                500ml - Rp 20.000</option>
+                        </select>
+                    </div>
+                    <div class="form-group rv">
+                        <label for="jumlah">Jumlah</label>
+                        <input type="number" id="jumlah" name="jumlah" value="1" min="1" inputmode="numeric"
+                            placeholder="Contoh: 5" required>
+                    </div>
+                    <div class="form-group rv">
+                        <div class="vcard" id="voucherCard" role="status" aria-live="polite" hidden>
+                            <span class="vc-ico" aria-hidden="true"><i class="fas fa-ticket-alt"></i></span>
+                            <div class="vc-main">
+                                <div class="vc-title"><span id="vcTitle">Voucher apresiasi</span> <code id="vcCode"></code></div>
+                                <p class="vc-sub" id="vcSub"></p>
+                            </div>
+                            <button type="button" class="vc-act" id="vcAct" hidden></button>
+                        </div>
+                        <label for="kodePromo">Kode promo atau voucher <small>(opsional)</small></label>
+                        <div class="promo-line">
+                            <input type="text" id="kodePromo" name="kodePromo" maxlength="30" autocomplete="off"
+                                placeholder="Kode promo atau voucher">
+                            <button type="button" id="promoBtn" class="btn-promo">Cek promo</button>
+                        </div>
+                        <p id="promoMsg" aria-live="polite"></p>
+                    </div>
+                    <div class="form-group rv">
+                        <label for="pesan">Catatan untuk pesanan <small>(opsional)</small></label>
+                        <textarea id="pesan" name="pesan"
+                            placeholder="Misalnya: titip ke satpam atau kirim pagi hari"></textarea>
+                        
+                    </div>
+                    <div class="form-group rv">
+                        <fieldset class="opt-set" id="metodeBayar">
+                            <legend id="lblBayar">Metode pembayaran</legend>
+                            <div class="opt-grid opt-grid--2" role="radiogroup" aria-labelledby="lblBayar">
+                            <label class="opt-card">
+                                <input type="radio" name="pembayaran" value="COD" checked>
+                                <span class="oc-body">
+                                    <span class="oc-ico" aria-hidden="true"><i class="fas fa-hand-holding-usd"></i></span>
+                                    <span class="oc-txt"><b>COD</b><small>Bayar tunai saat pesanan tiba</small></span>
+                                    <span class="oc-tick" aria-hidden="true"><i class="fas fa-check"></i></span>
+                                </span>
+                            </label>
+                            <label class="opt-card">
+                                <input type="radio" name="pembayaran" value="QRIS">
+                                <span class="oc-body">
+                                    <span class="oc-ico" aria-hidden="true"><i class="fas fa-qrcode"></i></span>
+                                    <span class="oc-txt"><b>QRIS</b><small>Scan lewat aplikasi bank atau e-wallet</small></span>
+                                    <span class="oc-tick" aria-hidden="true"><i class="fas fa-check"></i></span>
+                                </span>
+                            </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="cod-box" id="codBox" style="display:none"></div>
+                    <div class="qris-box" id="qrisBox" style="display:none;">
+                        <section class="qpay is-locked" id="qpay" aria-label="Pembayaran QRIS">
+                            <div class="qpay-head"><b>Bayar dengan QRIS</b><span id="qpayState">Menunggu pembayaran</span></div>
+                            <div class="qpay-code">
+                                <img src="qris.jpg" alt="Kode QRIS Margaluyu Farm" width="200" height="281" id="qpayImg">
+                                <div class="qpay-lock" id="qpayLock">Lengkapi alamat pengiriman agar nominal pembayaran dapat dipastikan.</div>
+                            </div>
+                            <a class="qpay-link qpay-dl" href="qris.jpg" download="QRIS-Margaluyu-Farm.jpg">Unduh kode QRIS</a>
+                            <div class="qpay-proof">
+                                <div class="qp-label" id="buktiLabel">Bukti pembayaran</div>
+                                <input type="file" id="buktiFile" accept="image/jpeg,image/png,image/webp" hidden>
+                                <div class="fpick" id="buktiPick">
+                                    <button type="button" class="fpick-btn" id="buktiBtn" aria-describedby="buktiLabel">Pilih file</button>
+                                    <span class="fpick-name" id="buktiHint" aria-live="polite">Belum ada file</span>
+                                    <button type="button" class="fpick-clear" id="buktiDel" aria-label="Hapus bukti pembayaran" hidden>Hapus</button>
+                                </div>
+                                <p class="fpick-note">JPG, PNG, atau WebP. Unggah tangkapan layar bukti transfer.</p>
+                                <p class="qpay-err" id="buktiErr" role="alert" hidden></p>
+                            </div>
+                        </section>
+                    </div>
+                                        </div>
+                    <aside class="checkout-side" aria-label="Ringkasan pembayaran">
+                        <div class="rc-paper">
+                        <h3 class="checkout-summary-title">Ringkasan pembayaran</h3>
+                        <div class="invoice-box" id="rincianHarga">
+                            <div class="invoice-row"><span id="rcHargaLabel">Harga</span><span id="rcSubtotal">Rp 0</span></div>
+                            <div class="invoice-row rc-discount" id="rcDiskonRow" style="display:none;"><span id="rcDiskonLabel">Diskon</span><span id="rcDiskon">-</span></div>
+                            <div class="invoice-row"><span>Ongkos kirim<small class="rc-sub" id="rcOngkirSub">Dihitung dari alamat</small></span><span id="rcOngkir" class="rc-muted">—</span></div>
+                            <div class="invoice-row rc-discount" id="rcOngkirDiscRow" style="display:none;"><span>Potongan ongkir</span><span id="rcOngkirDisc">-</span></div>
+                            <div class="invoice-row rc-coret" id="rcAsliRow" style="display:none;"><span>Total sebelum potongan</span><s id="rcAsli">Rp 0</s></div>
+                            <div class="invoice-row invoice-total"><span>Total pembayaran<small class="rc-sub" id="rcMetode">Bayar tunai saat pesanan tiba</small></span><span id="rcTotal">Rp 0</span></div>
+                        </div>
+                        </div>
+                        <p class="rc-note" id="rcNote">Total akhir dihitung ulang oleh sistem saat pesanan dibuat.</p>
+                        <div id="cfTurnstile" style="margin:0 0 14px;"></div>
+                        <div class="form-alert" id="formAlert" role="alert" hidden></div>
+                        <button type="submit" class="btn-submit rv" id="btnSubmit"><i class="fas fa-check-circle" aria-hidden="true"></i> Buat Pesanan</button>
+                    </aside>
+
+                </form>
+
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+        <div class="container footer-inner">
+            <div class="footer-col footer-brand">
+                <strong>Margaluyu Farm</strong>
+                <p>Peternakan sapi dan kambing yang menyediakan susu kambing Saanen segar serta hewan untuk kebutuhan
+                    kurban dan akikah.</p>
+                <a class="footer-contact" href="https://wa.me/62895635067289" target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i> 0895-6350-67289
+                </a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">Ikuti Kami</h4>
+                <div class="footer-social">
+                    <a href="https://wa.me/62895635067289" target="_blank" rel="noopener" aria-label="WhatsApp"><i
+                            class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/margaluyufarm354" target="_blank" rel="noopener"
+                        aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@margaluyu.farm.35" target="_blank" rel="noopener"
+                        aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a hidden href="https://www.youtube.com/@margaluyufarm354" target="_blank" rel="noopener"
+                        aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <small>Copyright &copy; 2026 - MARGALUYU FARM, All Rights Reserved. &middot; <a href="faq.html">Pertanyaan Umum</a> &middot; <a href="privasi.html"
+                    style="color:inherit;text-decoration:underline;text-underline-offset:3px">Kebijakan
+                    Privasi</a></small>
+        </div>
+    </footer>
+
+    <script src="orders-config.js"></script>
+    <div class="ok" id="ok" role="dialog" aria-modal="true" aria-labelledby="okTitle" hidden>
+        <div class="ok-sheet intro" id="okSheet">
+            <button type="button" class="ok-x" id="okX" aria-label="Tutup dan kembali ke beranda">&times;</button>
+            <div class="ok-hero" id="okHero">
+                <span class="ok-ico" aria-hidden="true"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="28"/><path d="M17 29.5l7.5 7.5L39.5 20.5"/></svg></span>
+                <h2 id="okTitle">Pesanan Berhasil</h2>
+                <p class="ok-time" id="okTime"></p>
+                <p class="ok-total" id="okTotal">Rp 0</p>
+                <p class="ok-state" id="okState"></p>
+                <button type="button" class="ok-skip" id="okSkip">Lihat struk</button>
+            </div>
+            <div class="ok-bar">
+                <span class="ok-mini" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                <div class="ok-bar-t"><b id="okBarTitle">Pesanan Berhasil</b><span class="ok-bar-state" id="okBarState"></span></div>
+                <span class="ok-bar-amt" id="okBarAmt"></span>
+            </div>
+            <div class="ok-body">
+                <div class="ok-receipt loading" id="okReceipt"></div>
+                <div class="ok-info" id="okInfo" hidden>
+                    <p class="ok-diag" id="okDiag" hidden></p>
+                    <div class="row" style="display:none" hidden>
+                        <a class="ok-link" id="okWa" href="#" target="_blank" rel="noopener">Kirim struk lewat WhatsApp</a>
+                    </div>
+                    <p class="ok-wa-note" id="okWaNote" role="status" hidden></p>
+                    <p class="ok-code" id="okCode"></p>
+                </div>
+            </div>
+            <div class="ok-foot">
+                <a class="ok-btn p" id="okPrimary" href="#">Order Tracking</a>
+                <div class="ok-row2"><button type="button" class="ok-act" id="okSave">Unduh struk</button><span class="ok-sep" aria-hidden="true"></span><a class="ok-act" id="okSecond" href="#">Selesai</a></div>
+            </div>
+        </div>
+    </div>
+    <script src="orders-store.js"></script>
+    <script src="receipt-image.js"></script>
+    <script src="my-orders.js"></script>
+    <script src="voucher-store.js"></script>
+    <script src="testimoni-store.js"></script>
+    <script>
+        // Tampilkan/sembunyikan kotak QRIS sesuai metode pembayaran yang dipilih
+        const paymentRadios = document.querySelectorAll('input[name="pembayaran"]');
+        const qrisBox = document.getElementById('qrisBox');
+        let buktiData = '', buktiNama = '';
+        const produkSelect = document.getElementById('produk');
+        const jumlahInput = document.getElementById('jumlah');
+        const codBox = document.getElementById('codBox');
+
+        function formatRupiah(n) {
+            return 'Rp ' + n.toLocaleString('id-ID');
+        }
+
+        // Harga, stok, dan area diambil dari server (/api/config). Nilai akhir SELALU dihitung ulang server saat pesanan dibuat.
+        const zonaSelect = document.getElementById('zona');
+        const promoInput = document.getElementById('kodePromo');
+        const promoMsg = document.getElementById('promoMsg');
+        const stokBanner = document.getElementById('stokBanner');
+        let CONFIG = { products: [], zones: [] };
+        let promo = { kode: '', diskon: 0 };
+
+        // Perkiraan promo beli banyak di sisi browser (aturan sama dengan server) agar diskon langsung terlihat
+        // meski wilayah belum dipilih. Angka resmi tetap dihitung server saat pesanan dibuat.
+        function diskonKuantitas(subtotal, jumlah) {
+            if (jumlah >= 6) return { nominal: Math.min(Math.floor(subtotal * 10 / 100), 20000), label: 'Diskon beli banyak (10%)' };
+            if (jumlah >= 3) return { nominal: Math.min(Math.floor(subtotal * 5 / 100), 10000), label: 'Diskon beli banyak (5%)' };
+            return { nominal: 0, label: 'Diskon' };
+        }
+
+        function hargaSatuan() {
+            const o = produkSelect.options[produkSelect.selectedIndex];
+            return o ? parseInt(o.dataset.price || '0', 10) : 0;
+        }
+
+        // Wilayah pengiriman yang dipilih pelanggan sebelum mengisi alamat: 'timur' | 'surabaya' | 'luar'.
+        // Pengelompokan area mengikuti penamaan yang sama dengan quote_order di database.
+        let modeArea = '';
+        function kelompokZona(z) {
+            if (/Surabaya Timur/i.test(z.nama)) return 'timur';
+            if (/Surabaya lainnya/i.test(z.nama)) return 'surabaya';
+            return 'luar';
+        }
+        function zonaMode(m) { return CONFIG.zones.filter(z => kelompokZona(z) === m); }
+        // Area penampung (kata kunci "*"): dipakai untuk kota luar Surabaya yang belum punya tarif khusus.
+        function adaCadangan(z) { return (z.cakupan || []).some(k => String(k).trim() === '*'); }
+
+        // Aturan sama dengan quote_order di database (server tetap menghitung ulang saat pesanan dibuat).
+        // Area luar Surabaya: potongan ongkir bertingkat menurut besar belanja terhadap "gratisMinBelanja" area.
+        const TINGKAT_SUBSIDI = [[100, 100], [80, 75], [60, 50], [40, 25]]; // [% dari syarat belanja, % ongkir yang dipotong]
+        const BATAS_KERINGANAN = 20; // diskon + subsidi ongkir maksimal 20% dari subtotal produk
+        function persenSubsidi(z, subtotal) {
+            if (z.gratisMinBelanja == null) return 0;
+            for (const [batas, persen] of TINGKAT_SUBSIDI) if (subtotal * 100 >= z.gratisMinBelanja * batas) return persen;
+            return 0;
+        }
+        function subsidiOngkir(z, subtotal, diskon, persen) {
+            const normal = Number(z.biaya) || 0;
+            if (normal <= 0 || persen <= 0) return 0;
+            let s = persen === 100 ? normal : Math.floor(Math.floor(normal * persen / 100) / 500) * 500;
+            s = Math.min(s, z.subsidiMaks == null ? normal : z.subsidiMaks);
+            return Math.max(Math.min(s, Math.floor(subtotal * BATAS_KERINGANAN / 100) - diskon), 0);
+        }
+        function ongkirZona(z, qty, subtotal, diskon) {
+            if (/Surabaya Timur/i.test(z.nama)) return { biaya: 0, normal: 0 };
+            if (/Surabaya lainnya/i.test(z.nama)) return { biaya: qty >= 4 ? 0 : 3000, normal: 3000 };
+            const normal = Number(z.biaya) || 0;
+            const sub = subsidiOngkir(z, subtotal, diskon || 0, persenSubsidi(z, subtotal));
+            return { biaya: normal - sub, normal };
+        }
+
+        // Petunjuk di bawah alamat: potongan ongkir saat ini dan berapa botol lagi menuju tingkat berikutnya.
+        function petunjukOngkir() {
+            const z = CONFIG.zones.find(x => String(x.id) === zonaSelect.value);
+            if (!z) return '';
+            const qty = parseInt(jumlahInput.value || '0', 10) || 0;
+            const harga = hargaSatuan();
+            if (/Surabaya Timur/i.test(z.nama)) return 'Gratis ongkir untuk semua pesanan.';
+            if (/Surabaya lainnya/i.test(z.nama)) return qty >= 4 ? 'Gratis ongkir untuk 4 botol atau lebih.' : 'Ongkir ' + formatRupiah(3000) + '; gratis mulai 4 botol.';
+            if (z.gratisMinBelanja == null || harga <= 0) return 'Ongkir ' + formatRupiah(Number(z.biaya) || 0) + '.';
+            const sub = harga * qty, now = persenSubsidi(z, sub);
+            const lanjut = [...TINGKAT_SUBSIDI].reverse().find(t => t[1] > now);
+            let t = 'Ongkir ' + formatRupiah(Number(z.biaya) || 0) + (z.subsidiMaks != null && z.subsidiMaks < z.biaya ? ', potongan maksimal ' + formatRupiah(z.subsidiMaks) : '') + '. ';
+            t += now > 0 ? 'Potongan saat ini ' + now + '%. ' : 'Belanja lebih banyak untuk mendapat potongan ongkir. ';
+            if (lanjut) {
+                const butuh = Math.ceil(z.gratisMinBelanja * lanjut[0] / 100 / harga) - qty;
+                if (butuh > 0) t += 'Tambah ' + butuh + ' botol untuk potongan ' + lanjut[1] + '%.';
+            }
+            return t.trim();
+        }
+
+        function hitungRincian() {
+            const selectedOption = produkSelect.options[produkSelect.selectedIndex];
+            const harga = selectedOption ? parseInt(selectedOption.dataset.price || '0', 10) : 0;
+            const jumlah = parseInt(jumlahInput.value || '0', 10);
+            const zona = CONFIG.zones.find(z => String(z.id) === zonaSelect.value);
+            const subtotal = (harga > 0 && jumlah > 0) ? harga * jumlah : 0;
+            let diskon = 0, labelDiskon = 'Diskon';
+            const kodeDiketik = promoInput.value.trim();
+            if (promo.kode && promo.kode !== 'BELI-BANYAK') {
+                diskon = promo.diskon || 0;
+                labelDiskon = promo.kode === 'OTOMATIS' ? 'Promo' : 'Kode ' + promo.kode;
+            } else if (!kodeDiketik) {
+                const q = diskonKuantitas(subtotal, jumlah);
+                diskon = q.nominal; labelDiskon = q.label;
+            }
+            diskon = Math.min(diskon, subtotal);
+            const og = zona ? ongkirZona(zona, jumlah, subtotal, diskon) : { biaya: 0, normal: 0 };
+            const ongkir = og.biaya, hemat = Math.max(og.normal - og.biaya, 0);
+            return { harga, jumlah, subtotal, ongkir, hemat, diskon, labelDiskon, total: subtotal + ongkir - diskon, zonaDipilih: !!zona };
+        }
+
+        function hitungTotal() {
+            const r = hitungRincian();
+            { const lb = document.getElementById('rcHargaLabel'); const pe = document.getElementById('produk'); lb.textContent = (pe && pe.value) ? pe.value : 'Harga'; if (r.jumlah > 0 && r.harga > 0) { const sm = document.createElement('small'); sm.className = 'rc-sub'; sm.textContent = r.jumlah + ' \u00d7 ' + formatRupiah(r.harga); lb.appendChild(sm); } }
+            document.getElementById('rcSubtotal').textContent = formatRupiah(r.subtotal);
+            const ong = document.getElementById('rcOngkir');
+            ong.classList.toggle('rc-muted', !r.zonaDipilih);
+            document.getElementById('rcOngkirSub').hidden = r.zonaDipilih;
+            ong.textContent = !r.zonaDipilih ? '\u2014' : (r.ongkir + r.hemat === 0 ? 'Gratis' : formatRupiah(r.ongkir + r.hemat));
+            { const od = document.getElementById('rcOngkirDiscRow'); od.style.display = (r.zonaDipilih && r.hemat > 0) ? 'flex' : 'none'; document.getElementById('rcOngkirDisc').textContent = '- ' + formatRupiah(r.hemat); }
+            document.getElementById('rcDiskonRow').style.display = r.diskon > 0 ? 'flex' : 'none';
+            document.getElementById('rcDiskonLabel').textContent = r.labelDiskon;
+            document.getElementById('rcDiskon').textContent = '- ' + formatRupiah(r.diskon);
+            { const potongan = r.diskon + r.hemat, asli = r.subtotal + r.ongkir + r.hemat; const ar = document.getElementById('rcAsliRow'); ar.style.display = (r.zonaDipilih && potongan > 0) ? 'flex' : 'none'; document.getElementById('rcAsli').textContent = formatRupiah(asli); }
+            document.getElementById('rcTotal').textContent = formatRupiah(r.total);
+            document.getElementById('rcNote').textContent = r.zonaDipilih
+                ? 'Total akhir dihitung ulang oleh sistem saat pesanan dibuat.'
+                : 'Isi alamat pengiriman untuk melihat ongkos kirim dan total akhir.';
+            segarkanQris(r);
+            { const tip = document.getElementById('ongkirTip'); if (tip) { tip.textContent = ''; tip.hidden = true; /* petunjuk ongkir disembunyikan */ } }
+            { const rm = document.getElementById('rcMetode'); if (rm) rm.textContent = document.querySelector('input[name="pembayaran"]:checked').value === 'QRIS' ? 'Dibayar lewat QRIS' : 'Bayar tunai saat pesanan tiba'; }
+            return r.total;
+        }
+
+        function setPromoMsg(text, ok) {
+            promoMsg.textContent = text || '';
+            promoMsg.className = text ? (ok ? 'is-ok' : 'is-err') : '';
+        }
+
+        async function terapkanPromo(silent) {
+            sinkronVoucherInput();
+            const kode = promoInput.value.trim().toUpperCase();
+            promo = { kode: '', diskon: 0 };
+            if (!zonaSelect.value) {
+                const q = diskonKuantitas(hitungRincian().subtotal, parseInt(jumlahInput.value || '0', 10));
+                if (!kode && q.nominal > 0) setPromoMsg('Promo beli banyak berlaku: hemat ' + formatRupiah(q.nominal) + '. Isi alamat untuk melihat total akhir.', true);
+                else setPromoMsg(silent ? '' : 'Isi alamat pengiriman terlebih dahulu untuk memeriksa kode.', false);
+                hitungTotal(); return;
+            }
+            try {
+                const res = await fetch('/api/promo', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ produk: produkSelect.value, jumlah: parseInt(jumlahInput.value || '0', 10), zonaId: Number(zonaSelect.value), telepon: document.getElementById('telepon').value, kodePromo: kode })
+                });
+                const j = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    // Gagal sementara (mis. terlalu sering mengecek): promo beli banyak tetap ditampilkan dari perkiraan lokal.
+                    setPromoMsg(kode || !silent ? (j.error || 'Kode promo tidak dapat dipakai.') : '', false);
+                    if (voucherAktif && kode === voucherAktif.kode) { if (voucherGagal(j.error || '')) { return terapkanPromo(true); } }
+                } else {
+                    promo = { kode: j.kodePromo || '', diskon: j.diskon || 0 };
+                    if (voucherAktif && promo.kode === voucherAktif.kode) renderVoucherCard('on', promo.diskon);
+                    if (promo.diskon > 0) setPromoMsg((j.jenisDiskon === 'kuantitas' ? 'Promo beli banyak diterapkan' : (kode ? 'Kode promo dipakai' : 'Promo otomatis diterapkan')) + ': hemat ' + formatRupiah(promo.diskon), true);
+                    else setPromoMsg(kode ? 'Kode promo valid, tetapi belum ada potongan harga.' : '', true);
+                }
+            } catch (e) { setPromoMsg(kode || !silent ? 'Gagal memeriksa kode. Coba lagi.' : '', false); }
+            hitungTotal();
+        }
+
+        // Tunda pemeriksaan ke server agar tidak dipanggil setiap ketukan angka (batas server 30 kali/10 menit).
+        let promoTimer = null;
+        function jadwalkanPromo() {
+            hitungTotal();
+            clearTimeout(promoTimer);
+            promoTimer = setTimeout(function () { terapkanPromo(true); }, 450);
+        }
+
+        function tampilkanStok() {
+            const prod = CONFIG.products.find(p => p.nama === produkSelect.value) || CONFIG.products[0];
+            const submit = document.querySelector('#orderForm button[type="submit"]');
+            if (!prod) return;
+            if (!prod.tersedia) {
+                stokBanner.className = 'notice is-err'; stokBanner.hidden = false;
+                stokBanner.textContent = 'Maaf, stok sedang habis. Silakan hubungi kami lewat WhatsApp untuk jadwal berikutnya.';
+                if (submit) submit.disabled = true;
+            } else if (prod.sisa) {
+                stokBanner.className = 'notice is-warn'; stokBanner.hidden = false;
+                stokBanner.textContent = 'Stok tinggal ' + prod.sisa + ' botol. Segera pesan sebelum habis.';
+            }
+            if (prod.tersedia) jumlahInput.max = String(prod.maks);
+        }
+
+        function labelOngkirZona(z) {
+            const qty = Number(jumlahInput.value || 1);
+            const o = ongkirZona(z, qty, hargaSatuan() * qty);
+            return o.biaya === 0 ? 'Gratis ongkir' : formatRupiah(o.biaya);
+        }
+        function renderPilihanZona() {
+            if (!CONFIG.zones.length) return;
+            const selectedZone = zonaSelect.value;
+            const daftar = CONFIG.zones;
+            zonaSelect.innerHTML = '<option value="">Pilih area pengiriman</option>' +
+                daftar.map(z => '<option value="' + z.id + '">' + String(z.nama).replace(/</g, '&lt;') + ' - ' + labelOngkirZona(z) + '</option>').join('');
+            if (selectedZone && daftar.some(z => String(z.id) === selectedZone)) zonaSelect.value = selectedZone;
+            labelPilihanWilayah();
+        }
+        // Pilihan wilayah yang tidak punya area aktif dinonaktifkan.
+        function labelPilihanWilayah() {
+            const ada = { surabaya: zonaMode('timur').length + zonaMode('surabaya').length, luar: zonaMode('luar').filter(z => !adaCadangan(z)).length };
+            document.querySelectorAll('input[name="wilayah"]').forEach(r => { r.disabled = CONFIG.zones.length > 0 && !ada[r.value]; });
+            if (window.mfDDSync) window.mfDDSync();
+        }
+
+        // ---------- Alamat pengiriman: Surabaya (pilih bagian) atau Luar Surabaya (tulis kota) ----------
+        const alamatInput = document.getElementById('alamat');
+        const fJalan = document.getElementById('alamatJalan'), fKota = document.getElementById('kota'), fPatokan = document.getElementById('patokan'), fBagian = document.getElementById('bagian');
+        const kirimBody = document.getElementById('kirimBody'), bagianRow = document.getElementById('bagianRow'), kotaRow = document.getElementById('kotaRow'), bagianHint = document.getElementById('bagianHint'), wilFieldset = document.getElementById('wilayah');
+        const areaDetect = document.getElementById('areaDetect'), areaDetectText = document.getElementById('areaDetectText'), areaChange = document.getElementById('areaChange');
+        const NAMA_BAGIAN = { timur: 'Timur', pusat: 'Pusat', barat: 'Barat', utara: 'Utara', selatan: 'Selatan' };
+        // Contoh kecamatan agar pelanggan memilih bagian dengan yakin (menurut pembagian wilayah Pemkot Surabaya).
+        const CONTOH_BAGIAN = {
+            timur: 'Gubeng, Sukolilo, Rungkut, Mulyorejo, Tambaksari, Tenggilis Mejoyo, Gunung Anyar',
+            pusat: 'Genteng, Bubutan, Simokerto, Tegalsari',
+            barat: 'Tandes, Sukomanunggal, Benowo, Pakal, Lakarsantri, Sambikerep, Asemrowo',
+            utara: 'Kenjeran, Bulak, Krembangan, Pabean Cantian, Semampir',
+            selatan: 'Wonokromo, Wonocolo, Gayungan, Jambangan, Karangpilang, Wiyung, Dukuh Pakis'
+        };
+        function bacaAlamat() { return { jalan: fJalan.value.trim(), kota: fKota.value.trim(), bagian: fBagian.value, patokan: fPatokan.value.trim() }; }
+        function gabungAlamat() {
+            const f = bacaAlamat();
+            let lokasi = '';
+            if (modeArea === 'surabaya' && f.bagian) lokasi = 'Surabaya ' + NAMA_BAGIAN[f.bagian];
+            if (modeArea === 'luar' && f.kota) lokasi = f.kota;
+            alamatInput.value = (f.jalan && lokasi) ? f.jalan + ', ' + lokasi : '';
+            return alamatInput.value;
+        }
+        function judulKata(t) { return t.replace(/\b[a-z]/g, c => c.toUpperCase()); }
+        // Saran nama kota diambil dari area luar kota yang aktif di pengaturan admin.
+        function isiDaftarArea() {
+            const dk = document.getElementById('daftarKota'); if (!dk) return;
+            const semua = new Set();
+            zonaMode('luar').forEach(z => (z.cakupan || []).forEach(k => { const t = String(k).trim(); if (t.length >= 3 && t !== '*') semua.add(judulKata(t)); }));
+            dk.textContent = '';
+            Array.from(semua).sort().forEach(k => { const o = document.createElement('option'); o.value = k; dk.appendChild(o); });
+        }
+
+        function normTeks(t) {
+            // "Kab. Sidoarjo", "Kota Malang", dan "Sidoarjo" disamakan.
+            let x = String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+            x = x.replace(/\b(kabupaten|kab|kota|kodya)\b/g, ' ').replace(/\s+/g, ' ').trim();
+            return x;
+        }
+        function jarakEdit(a, b) {
+            const m = a.length, n = b.length; if (!m) return n; if (!n) return m;
+            // Jarak Damerau: huruf bertukar tempat (mis. "Gersik" untuk "Gresik") dihitung satu kesalahan.
+            const d = [];
+            for (let i = 0; i <= m; i++) { d[i] = [i]; }
+            for (let j = 0; j <= n; j++) d[0][j] = j;
+            for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) {
+                const c = a[i - 1] === b[j - 1] ? 0 : 1;
+                d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + c);
+                if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+            }
+            return d[m][n];
+        }
+        // Mencari area dari nama kota/kabupaten. Tepat dulu; bila tidak ada, toleransi salah ketik kecil
+        // (1 huruf untuk nama 5-7 huruf, 2 huruf untuk nama >= 8 huruf) dan hanya diterima bila hasilnya satu area.
+        function cariAreaKota(teks, daftar) {
+            const t = normTeks(teks);
+            if (t.length < 3) return { ids: [], tepat: false };
+            const kandidat = [];
+            daftar.forEach(z => (z.cakupan || []).forEach(k => { const kk = normTeks(k); if (kk.length >= 3 && String(k).trim() !== '*') kandidat.push({ id: String(z.id), kk }); }));
+            const tepat = Array.from(new Set(kandidat.filter(c => (' ' + t + ' ').indexOf(' ' + c.kk + ' ') !== -1).map(c => c.id)));
+            if (tepat.length) return { ids: tepat, tepat: true };
+            let terbaik = 99, ids = new Set();
+            kandidat.forEach(c => {
+                const batas = c.kk.length >= 8 ? 2 : c.kk.length >= 5 ? 1 : 0;
+                const d = jarakEdit(t, c.kk);
+                if (d <= batas) { if (d < terbaik) { terbaik = d; ids = new Set([c.id]); } else if (d === terbaik) ids.add(c.id); }
+            });
+            return { ids: Array.from(ids), tepat: false };
+        }
+
+        // Hasil: tunggu | ok | salahWilayah | ambigu | umum | tidakDikenal | kosong
+        function selesaikanArea(f) {
+            if (modeArea === 'surabaya') {
+                if (!f.bagian) return { status: 'tunggu' };
+                const z = f.bagian === 'timur' ? zonaMode('timur')[0] : zonaMode('surabaya')[0];
+                return z ? { status: 'ok', zona: z } : { status: 'kosong' };
+            }
+            const zm = zonaMode('luar');
+            if (!zm.length) return { status: 'kosong' };
+            if (!f.kota) return { status: 'tunggu' };
+            if (/\bsurabaya\b/i.test(f.kota)) return { status: 'salahWilayah', saran: 'surabaya' };
+            const khusus = zm.filter(z => !adaCadangan(z));
+            const h = cariAreaKota(f.kota, khusus);
+            if (h.ids.length === 1) return { status: 'ok', zona: khusus.find(z => String(z.id) === h.ids[0]) };
+            if (h.ids.length > 1) return { status: 'ambigu' };
+            const umum = zm.find(adaCadangan);
+            return umum ? { status: 'umum', zona: umum } : { status: 'tidakDikenal' };
+        }
+
+        function isiAreaChip(kelas, awal, tebal, akhir, tombol) {
+            areaDetect.className = 'area-detect' + (kelas ? ' ' + kelas : '');
+            areaDetect.hidden = !kelas;
+            areaDetectText.textContent = '';
+            areaDetectText.appendChild(document.createTextNode(awal));
+            if (tebal) { const b = document.createElement('b'); b.textContent = tebal; areaDetectText.appendChild(b); }
+            if (akhir) areaDetectText.appendChild(document.createTextNode(akhir));
+            areaChange.hidden = !tombol;
+            if (tombol) { areaChange.textContent = tombol.label; areaChange.dataset.mode = tombol.mode; }
+        }
+
+        function perbaruiArea() {
+            if (!CONFIG.zones.length) return;
+            const sebelum = zonaSelect.value;
+            const f = bacaAlamat();
+            gabungAlamat();
+            bagianHint.textContent = (modeArea === 'surabaya' && f.bagian) ? 'Meliputi ' + CONTOH_BAGIAN[f.bagian] + ' dan sekitarnya.' : '';
+            zonaSelect.value = '';
+            if (!modeArea) {
+                isiAreaChip('', '', '', '', null);
+            } else {
+                const h = selesaikanArea(f);
+                if (h.status === 'ok' || h.status === 'umum') {
+                    zonaSelect.value = String(h.zona.id);
+                    isiAreaChip('', '', '', '', null);
+                } else if (h.status === 'salahWilayah') {
+                    isiAreaChip('is-warn', 'Alamat ini berada di Surabaya. ', '', '', { label: 'Pilih Surabaya', mode: 'pindah' });
+                } else if (h.status === 'tidakDikenal') {
+                    isiAreaChip('is-warn', 'Pengiriman luar Surabaya saat ini menjangkau Jawa Timur. Periksa ejaan kota/kabupaten atau pilih dari saran yang muncul.', '', '', null);
+                } else if (h.status === 'ambigu') {
+                    isiAreaChip('is-warn', 'Nama kota/kabupaten belum jelas. Tulis lengkap, misalnya "Kabupaten Pasuruan".', '', '', null);
+                } else if (h.status === 'kosong') {
+                    isiAreaChip('is-warn', 'Pengiriman ke wilayah ini belum tersedia.', '', '', null);
+                } else {
+                    isiAreaChip('', '', '', '', null);
+                }
+            }
+            hitungTotal();
+            if (zonaSelect.value !== sebelum) { clearTimeout(promoTimer); terapkanPromo(true); }
+        }
+
+        // Memilih Surabaya/Luar Surabaya menampilkan isian yang relevan; teks yang sudah diketik tidak dihapus.
+        function setWilayah(m, fokus) {
+            modeArea = m;
+            wilFieldset.classList.remove('is-invalid');
+            document.querySelectorAll('input[name="wilayah"]').forEach(r => { r.checked = r.value === m; });
+            if (window.mfDDSync) window.mfDDSync();
+            kirimBody.hidden = !m;
+            bagianRow.hidden = m !== 'surabaya';
+            kotaRow.hidden = m !== 'luar';
+            if (m === 'luar' && /surabaya/i.test(fKota.value)) fKota.value = '';
+            renderPilihanZona(); isiDaftarArea(); perbaruiArea();
+            if (m && fokus) setTimeout(() => (m === 'luar' ? fKota : fokusBagian()).focus(), 30);
+        }
+        function fokusBagian() { return (window.mfDDFocus && window.mfDDFocus('bagianR')) || document.querySelector('input[name="bagianR"]:checked') || document.querySelector('input[name="bagianR"]'); }
+        function tautanWA(teks) { return 'https://wa.me/62895635067289?text=' + encodeURIComponent(teks); }
+        function tampilStatusZona(teks, denganWA) {
+            document.getElementById('zonaStatusText').textContent = teks;
+            document.getElementById('zonaStatus').hidden = !teks;
+            document.getElementById('zonaWA').hidden = !(teks && denganWA);
+        }
+
+        // Salinan terakhir yang berhasil dimuat disimpan di browser. Bila server sedang bermasalah, halaman tetap
+        // bisa menampilkan harga & area. Pesanan tetap divalidasi server, jadi salinan ini TIDAK menentukan harga akhir.
+        const KUNCI_CACHE = 'mf_config_v1';
+        function simpanCache(j) { try { localStorage.setItem(KUNCI_CACHE, JSON.stringify({ t: Date.now(), j: j })); } catch (e) { /* abaikan */ } }
+        // Pratinjau lokal: bila halaman dibuka langsung dari komputer (file://) tanpa server, pakai data contoh
+        // agar tampilan tetap dapat dilihat. Pesanan tetap tidak bisa dikirim tanpa server.
+        const PRATINJAU = {
+            success: true,
+            products: [{ nama: 'Susu Kambing Saanen 500ml', harga: 20000, tersedia: true, sisa: null, maks: 50 }],
+            zones: [
+                { id: 1, nama: 'Surabaya Timur (gratis ongkir)', biaya: 0, cakupan: [], gratisMinBelanja: null, subsidiMaks: null },
+                { id: 2, nama: 'Surabaya lainnya', biaya: 3000, cakupan: [], gratisMinBelanja: null, subsidiMaks: null },
+                { id: 3, nama: 'Luar Kota - Ring 1', biaya: 10000, cakupan: ['sidoarjo', 'gresik'], gratisMinBelanja: 150000, subsidiMaks: null },
+                { id: 4, nama: 'Luar Kota - Ring 2', biaya: 20000, cakupan: ['mojokerto', 'pasuruan', 'lamongan', 'jombang', 'bangkalan'], gratisMinBelanja: 200000, subsidiMaks: 10000 },
+                { id: 5, nama: 'Luar Kota - Ring 3', biaya: 35000, cakupan: ['malang', 'batu', 'probolinggo', 'kediri', 'madiun', 'jember', 'banyuwangi', 'blitar', 'tuban', 'bojonegoro'], gratisMinBelanja: 300000, subsidiMaks: 15000 }
+            ]
+        };
+        function bacaCache() {
+            try {
+                const c = JSON.parse(localStorage.getItem(KUNCI_CACHE) || 'null');
+                if (c && c.j && Array.isArray(c.j.zones) && Array.isArray(c.j.products) && Date.now() - c.t < 7 * 864e5) return c;
+            } catch (e) { /* abaikan */ }
+            return null;
+        }
+
+        async function ambilKonfigurasi() {
+            let lastErr = null;
+            for (let i = 0; i < 3; i++) {
+                try {
+                    const res = await fetch('/api/config', { cache: 'no-store' });
+                    const j = await res.json().catch(() => ({}));
+                    if (res.ok && j.success) { simpanCache(j); return j; }
+                    lastErr = new Error(j.error || ('HTTP ' + res.status));
+                } catch (e) { lastErr = e; }
+                await new Promise(r => setTimeout(r, 700 * (i + 1)));
+            }
+            throw lastErr || new Error('gagal');
+        }
+
+        function terapkanKonfigurasi(j) {
+            CONFIG = j;
+            const opt = produkSelect.options[produkSelect.selectedIndex];
+            const prod = j.products.find(p => p.nama === produkSelect.value);
+            if (opt && prod) { opt.dataset.price = String(prod.harga); opt.textContent = prod.nama + ' - ' + formatRupiah(prod.harga); }
+            if (!j.zones.length) {
+                zonaSelect.innerHTML = '<option value="">Area pengiriman belum tersedia</option>';
+                tampilStatusZona('Belum ada area pengiriman aktif. Silakan hubungi kami lewat WhatsApp untuk memesan.', true);
+            } else {
+                zonaSelect.disabled = false;
+                renderPilihanZona();
+                isiDaftarArea();
+                perbaruiArea();
+            }
+            if (j.jadwal) {
+                const tgl = document.getElementById('tanggalKirim');
+                tgl.min = j.jadwal.min; tgl.max = j.jadwal.max;
+            }
+            tampilkanStok();
+        }
+
+        async function muatKonfigurasi() {
+            zonaSelect.disabled = true;
+            zonaSelect.innerHTML = '<option value="">Memuat area pengiriman...</option>';
+            tampilStatusZona('');
+            try {
+                terapkanKonfigurasi(await ambilKonfigurasi());
+            } catch (e) {
+                const alasan = String((e && e.message) || 'koneksi bermasalah').slice(0, 90);
+                const c = bacaCache();
+                if (c) {
+                    terapkanKonfigurasi(c.j);
+                    tampilStatusZona('Server sedang sulit dihubungi (' + alasan + '). Harga dan tarif memakai data tersimpan; total akhir dipastikan saat pesanan dibuat. Jika pesanan gagal, kirim lewat WhatsApp.', true);
+                } else if (location.protocol === 'file:') {
+                    terapkanKonfigurasi(PRATINJAU);
+                    // Pratinjau lokal: data contoh dipakai tanpa pesan tambahan agar tampilan tidak terganggu.
+                } else {
+                    zonaSelect.innerHTML = '<option value="">Area belum dapat dimuat</option>';
+                    tampilStatusZona('Data harga dan area belum dapat dimuat (' + alasan + '). Periksa koneksi lalu coba lagi, atau pesan langsung lewat WhatsApp.', true);
+                }
+            }
+            hitungTotal();
+            terapkanPromo(true);
+        }
+
+
+        // ---- QRIS di formulir: kode + nominal tampil di sini, pesanan baru bisa dibuat setelah bukti pembayaran dilampirkan ----
+        function segarkanQris(r) {
+            const qris = document.querySelector('input[name="pembayaran"]:checked').value === 'QRIS';
+            const qpay = document.getElementById('qpay'), btn = document.querySelector('#orderForm button[type="submit"]');
+            if (!btn) return;
+            const rr = r || hitungRincian();
+            const pasti = Boolean(rr.zonaDipilih && rr.total > 0);
+            qpay.classList.toggle('is-locked', !pasti);
+            document.getElementById('buktiBtn').disabled = !pasti;
+            qpay.classList.toggle('is-paid', Boolean(buktiData));
+            document.getElementById('qpayState').textContent = buktiData ? 'Bukti terlampir' : 'Menunggu pembayaran';
+                                    const blok = qris && (!pasti || !buktiData);
+            if (btn.getAttribute('aria-busy') !== 'true') btn.disabled = blok;
+            if (qris) {
+                document.getElementById('rcNote').textContent = !pasti ? 'Lengkapi alamat agar nominal QRIS dapat dipastikan.'
+                    : (!buktiData ? 'Bayar lewat QRIS lalu unggah bukti pembayaran untuk membuat pesanan.' : 'Bukti pembayaran terlampir. Pesanan diproses setelah pembayaran kami periksa.');
+            }
+        }
+        function bacaGambar(file) {
+            return new Promise(function (resolve, reject) {
+                const url = URL.createObjectURL(file), im = new Image();
+                im.onload = function () { URL.revokeObjectURL(url); resolve(im); };
+                im.onerror = function () { URL.revokeObjectURL(url); reject(new Error('Berkas bukan gambar yang dapat dibaca.')); };
+                im.src = url;
+            });
+        }
+        // Perkecil bukti ke <= ~90 ribu karakter agar muat di batas server tanpa mengorbankan keterbacaan nominal.
+        async function kompresBukti(file) {
+            if (!/^image\/(jpeg|png|webp)$/.test(file.type)) throw new Error('Format harus JPG, PNG, atau WebP.');
+            const im = await bacaGambar(file);
+            for (const maxSisi of [1000, 800, 640, 520]) {
+                const k = Math.min(1, maxSisi / Math.max(im.naturalWidth, im.naturalHeight));
+                const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.naturalWidth * k)); c.height = Math.max(1, Math.round(im.naturalHeight * k));
+                const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+                for (const q of [0.75, 0.62, 0.5, 0.4]) { const d = c.toDataURL('image/jpeg', q); if (d.length <= 90000) return d; }
+            }
+            throw new Error('Gambar terlalu besar untuk diperkecil. Gunakan tangkapan layar bukti transfer.');
+        }
+        // Tampilkan hanya nama file bukti; tombol Hapus muncul saat ada file.
+        function tampilkanBukti(nama) {
+            const hint = document.getElementById('buktiHint');
+            hint.textContent = nama || 'Belum ada file'; hint.title = nama || '';
+            hint.classList.toggle('has-file', !!nama);
+            document.getElementById('buktiBtn').textContent = nama ? 'Ganti file' : 'Pilih file';
+            document.getElementById('buktiDel').hidden = !nama;
+        }
+        (function () {
+            const f = document.getElementById('buktiFile'), err = document.getElementById('buktiErr');
+            document.getElementById('buktiBtn').addEventListener('click', function () { f.click(); });
+            f.addEventListener('change', async function () {
+                const file = f.files && f.files[0]; err.hidden = true;
+                if (!file) return;
+                try {
+                    buktiData = await kompresBukti(file); buktiNama = file.name || 'bukti-pembayaran.jpg';
+                    tampilkanBukti(buktiNama);
+                } catch (e) { buktiData = ''; err.textContent = e.message || 'Bukti pembayaran belum bisa dibaca.'; err.hidden = false; }
+                f.value = ''; segarkanQris();
+            });
+            document.getElementById('buktiDel').addEventListener('click', function () {
+                buktiData = ''; buktiNama = ''; err.hidden = true; tampilkanBukti(''); segarkanQris();
+            });
+        })();
+
+        function toggleQris() {
+            const selected = document.querySelector('input[name="pembayaran"]:checked').value;
+            const useQris = selected === 'QRIS';
+            qrisBox.style.display = useQris ? 'block' : 'none';
+            codBox.style.display = useQris ? 'none' : 'block';
+            hitungTotal();
+        }
+        paymentRadios.forEach(r => r.addEventListener('change', toggleQris));
+        produkSelect.addEventListener('change', jadwalkanPromo);
+        jumlahInput.addEventListener('input', function () { renderPilihanZona(); perbaruiArea(); jadwalkanPromo(); });
+        [fJalan, fKota, fPatokan].forEach(el => el.addEventListener('input', perbaruiArea));
+        document.querySelectorAll('input[name="bagianR"]').forEach(r => r.addEventListener('change', function () { if (r.checked) { fBagian.value = r.value; wilFieldset.classList.remove('is-invalid'); perbaruiArea(); } }));
+        areaChange.addEventListener('click', function () {
+            if (areaChange.dataset.mode === 'pindah') { setWilayah('surabaya', true); }
+        });
+        document.querySelectorAll('input[name="wilayah"]').forEach(r => r.addEventListener('change', function () { if (r.checked) setWilayah(r.value, true); }));
+        promoInput.addEventListener('input', function () {
+            promo = { kode: '', diskon: 0 };
+            // Kode yang diketik sendiri tidak boleh ditimpa voucher otomatis.
+            promoManual = !!promoInput.value.trim() && !(voucherAktif && promoInput.value.trim().toUpperCase() === voucherAktif.kode);
+            hitungTotal();
+        });
+        document.getElementById('promoBtn').addEventListener('click', function () { clearTimeout(promoTimer); terapkanPromo(false); });
+        document.getElementById('telepon').addEventListener('change', function () { if (promoInput.value.trim()) terapkanPromo(true); });
+        document.getElementById('zonaRetry').addEventListener('click', muatKonfigurasi);
+        // ---------- Voucher apresiasi: tersimpan di perangkat, terisi otomatis, memilih diskon yang paling hemat ----------
+        // Satu pesanan hanya boleh satu jenis potongan (promo beli banyak ATAU voucher). Agar pelanggan tidak rugi,
+        // voucher dipasang otomatis hanya bila potongannya lebih besar dari promo beli banyak; bila tidak, voucher tetap
+        // tersimpan untuk pesanan berikutnya dan pelanggan bisa memilih memakainya.
+        let voucherAktif = null;      // catatan voucher dari MFVoucher
+        let voucherMode = 'auto';     // 'auto' | 'paksa' (dipilih pelanggan) | 'lepas' (tidak dipakai)
+        let promoManual = false;      // pelanggan mengetik kode sendiri
+        const vCard = document.getElementById('voucherCard'), vSub = document.getElementById('vcSub'), vCode = document.getElementById('vcCode'), vAct = document.getElementById('vcAct');
+        const tglVoucher = iso => { const d = new Date(String(iso) + 'T00:00:00'); return isNaN(d) ? '' : d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); };
+        const syaratVoucher = v => (v.min_belanja > 0 ? 'min. belanja ' + formatRupiah(v.min_belanja) : 'tanpa minimal belanja') + (v.berlaku_sampai ? ' · sampai ' + tglVoucher(v.berlaku_sampai) : '');
+        function pilihVoucher() { voucherAktif = (typeof MFVoucher !== 'undefined') ? MFVoucher.best() : null; }
+
+        function keputusanVoucher() {
+            const v = voucherAktif; if (!v) return '';
+            if (voucherMode === 'lepas') return 'lepas';
+            const sub = hitungRincian().subtotal, qty = parseInt(jumlahInput.value || '0', 10) || 0;
+            if (sub < v.min_belanja) return 'kurang';
+            if (voucherMode !== 'paksa' && diskonKuantitas(sub, qty).nominal > Math.min(v.nilai, sub)) return 'lebih-hemat';
+            return 'pakai';
+        }
+        function renderVoucherCard(state, info) {
+            if (!voucherAktif) { vCard.hidden = true; return; }
+            const v = voucherAktif, r = hitungRincian();
+            vCard.hidden = false; vCode.textContent = v.kode;
+            vCard.classList.toggle('is-on', state === 'on'); vCard.classList.toggle('is-wait', state !== 'on');
+            vAct.hidden = true; vAct.onclick = null;
+            const aksi = (label, fn) => { vAct.textContent = label; vAct.hidden = false; vAct.onclick = fn; };
+            if (state === 'on') {
+                vSub.textContent = 'Terpasang: hemat ' + formatRupiah(info || v.nilai) + ' · ' + syaratVoucher(v);
+                aksi('Lepas', function () { voucherMode = 'lepas'; promoManual = false; promoInput.value = ''; terapkanPromo(true); });
+            } else if (state === 'kurang') {
+                const kurang = Math.max(1, Math.ceil((v.min_belanja - r.subtotal) / (r.harga || 20000)));
+                vSub.textContent = 'Tambah ' + kurang + ' botol lagi agar voucher bisa dipakai (' + syaratVoucher(v) + '). Voucher tetap tersimpan.';
+            } else if (state === 'lebih-hemat') {
+                const q = diskonKuantitas(r.subtotal, parseInt(jumlahInput.value || '0', 10) || 0).nominal;
+                vSub.textContent = 'Promo beli banyak lebih hemat (' + formatRupiah(q) + '), jadi dipakai lebih dulu. Voucher tetap tersimpan untuk pesanan berikutnya.';
+                aksi('Pakai voucher saja', function () { voucherMode = 'paksa'; terapkanPromo(true); });
+            } else if (state === 'lepas') {
+                vSub.textContent = 'Tidak dipakai untuk pesanan ini. Voucher tetap tersimpan (' + syaratVoucher(v) + ').';
+                aksi('Pakai voucher', function () { voucherMode = 'auto'; terapkanPromo(true); });
+            } else if (state === 'nomor') {
+                const hint = v.telepon ? '0' + String(v.telepon).replace(/^62/, '').replace(/^(\d{3})\d+(\d{3})$/, '$1****$2') : (v.teleponHint || '');
+                vSub.textContent = 'Voucher ini hanya berlaku untuk nomor HP pemesan' + (hint ? ' (' + hint + ')' : '') + '. Isi No. HP yang sama di atas.';
+                if (v.telepon) aksi('Pakai nomor itu', function () { document.getElementById('telepon').value = '0' + String(v.telepon).replace(/^62/, ''); terapkanPromo(true); });
+            } else if (state === 'galat') {
+                vSub.textContent = info || 'Voucher belum dapat dipakai.';
+            } else {
+                vSub.textContent = (zonaSelect.value ? 'Akan dipasang otomatis' : 'Akan dipasang otomatis setelah alamat diisi') + ' · ' + syaratVoucher(v);
+            }
+        }
+        // Isi kolom kode sesuai keputusan, kecuali pelanggan mengetik kode sendiri.
+        function sinkronVoucherInput() {
+            if (!voucherAktif) return;
+            if (!(promoManual)) {
+                const k = keputusanVoucher();
+                if (k === 'pakai') promoInput.value = voucherAktif.kode;
+                else if (promoInput.value.trim().toUpperCase() === voucherAktif.kode) promoInput.value = '';
+                if (k !== 'pakai') renderVoucherCard(k); else if (!zonaSelect.value) renderVoucherCard('siap');
+            }
+            const tel = document.getElementById('telepon');
+            if (!tel.value.trim() && voucherAktif.telepon) tel.value = '0' + String(voucherAktif.telepon).replace(/^62/, '');
+        }
+        // Dipanggil saat server menolak voucher. Mengembalikan true bila daftar voucher berubah dan perlu dihitung ulang.
+        function voucherGagal(pesan) {
+            const v = voucherAktif;
+            if (/sudah digunakan|kedaluwarsa/i.test(pesan)) {
+                if (typeof MFVoucher !== 'undefined') MFVoucher.markUsed(v.kode);
+                promoInput.value = ''; promoManual = false; voucherMode = 'auto';
+                pilihVoucher(); renderVoucherCard('siap');
+                return true;
+            }
+            if (/nomor WhatsApp/i.test(pesan)) renderVoucherCard('nomor');
+            else renderVoucherCard('galat', pesan);
+            return false;
+        }
+        function mulaiVoucher() {
+            try {
+                const dariTautan = (new URLSearchParams(location.search).get('voucher') || '').toUpperCase().replace(/[^A-Z0-9-]/g, '').slice(0, 30);
+                pilihVoucher();
+                if (dariTautan) {
+                    // Pelanggan menekan "Pakai voucher sekarang": hormati pilihannya.
+                    const tersimpan = (typeof MFVoucher !== 'undefined') ? MFVoucher.find(dariTautan) : null;
+                    if (tersimpan && MFVoucher.usable(tersimpan)) { voucherAktif = tersimpan; voucherMode = 'paksa'; }
+                    else { promoInput.value = dariTautan; promoManual = true; setPromoMsg('Kode ' + dariTautan + ' terisi.', true); }
+                }
+                if (voucherAktif) { sinkronVoucherInput(); }
+                else vCard.hidden = true;
+            } catch (e) { /* abaikan: kode tetap bisa diketik manual */ }
+            // Pulihkan voucher dari server untuk pesanan yang sudah diulas tetapi vouchernya belum ada di perangkat ini.
+            if (typeof MFVoucher !== 'undefined') {
+                MFVoucher.persist();
+                (typeof TestimoniStore !== 'undefined' ? TestimoniStore.syncPending().catch(function () {}) : Promise.resolve()).then(function () { return MFVoucher.syncForOrders(); }).then(function () { if (!voucherAktif) { pilihVoucher(); if (voucherAktif) { sinkronVoucherInput(); if (zonaSelect.value) terapkanPromo(true); } } }).catch(function () {});
+            }
+        }
+        // Tambah/ubah jumlah bisa mengubah voucher mana yang paling menguntungkan.
+        jumlahInput.addEventListener('input', function () { if (voucherAktif && !promoManual) sinkronVoucherInput(); });
+        mulaiVoucher();
+        muatKonfigurasi();
+        toggleQris();
+
+        const formAlert = document.getElementById('formAlert');
+        function showFormError(msg, el) {
+            formAlert.textContent = msg; formAlert.hidden = false;
+            if (el) el.classList.add('is-bad');
+        }
+        function clearFormError() {
+            formAlert.hidden = true; formAlert.textContent = '';
+            document.querySelectorAll('#orderForm .is-bad').forEach(function (n) { n.classList.remove('is-bad'); });
+        }
+        document.getElementById('orderForm').addEventListener('input', function (e) { if (e.target.classList) e.target.classList.remove('is-bad'); });
+        function setBusy(btn, busy) {
+            btn.disabled = busy;
+            if (busy) { btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Memproses pesanan'; }
+            else { btn.removeAttribute('aria-busy'); btn.innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i> Buat Pesanan'; segarkanQris(); }
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Mencegah submit default
+            clearFormError();
+
+            // Ambil nilai dari form
+            const nama = document.getElementById('nama').value.trim();
+            const telepon = document.getElementById('telepon').value.trim();
+            const alamat = gabungAlamat();
+            const fa = bacaAlamat();
+            const produk = document.getElementById('produk').value;
+            const jumlah = document.getElementById('jumlah').value;
+            const catatanPesan = document.getElementById('pesan').value.trim();
+            const pesan = [fPatokan.value.trim() && ('Patokan: ' + fPatokan.value.trim()), catatanPesan].filter(Boolean).join('\n');
+            const pembayaran = document.querySelector('input[name="pembayaran"]:checked').value;
+
+            // Validasi sederhana
+            if (!modeArea) {
+                wilFieldset.classList.add('is-invalid');
+                wilFieldset.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                showFormError('Pilih tujuan pengiriman: Surabaya atau Luar Surabaya.');
+                return;
+            }
+            if (modeArea === 'surabaya' && !fa.bagian) { wilFieldset.classList.add('is-invalid'); fokusBagian().focus(); showFormError('Pilih bagian Surabaya terlebih dahulu.'); return; }
+            if (modeArea === 'luar' && !fa.kota) { fKota.focus(); showFormError('Tulis kota atau kabupaten tujuan pengiriman.', fKota); return; }
+            if (!fa.jalan) { fJalan.focus(); showFormError('Lengkapi alamat jalan dan nomor rumah.', fJalan); return; }
+            if (!zonaSelect.value) {
+                perbaruiArea();
+                (modeArea === 'luar' ? fKota : fokusBagian()).focus();
+                showFormError('Kota atau wilayah pengiriman belum sesuai. Periksa keterangan area di bagian alamat.');
+                return;
+            }
+            if (pembayaran === 'QRIS' && !buktiData) {
+                document.getElementById('qpay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                showFormError('Selesaikan pembayaran QRIS dan unggah bukti pembayaran terlebih dahulu.');
+                return;
+            }
+            if (!nama || !telepon || !alamat || !produk || !jumlah) {
+                [['nama', nama], ['telepon', telepon]].forEach(function (x) { if (!x[1]) document.getElementById(x[0]).classList.add('is-bad'); });
+                (!nama ? document.getElementById('nama') : document.getElementById('telepon')).focus();
+                showFormError('Lengkapi nama dan nomor HP.');
+                return;
+            }
+            const submitBtn = document.querySelector('#orderForm button[type="submit"]');
+            setBusy(submitBtn, true);
+
+            // Pastikan promo otomatis/kode promo sudah dihitung ulang sebelum total dikirim.
+            if (zonaSelect.value) await terapkanPromo(true);
+            const totalHarga = hitungTotal();
+
+            // Simpan data pesanan ke penyimpanan bersama agar dapat dilihat admin dan dilacak pelanggan.
+            // Bukti pembayaran saat ini disimpan dalam bentuk terkompresi; bukti lama
+            // akan dibersihkan otomatis setelah 90 hari dari pesanan yang sudah Selesai.
+            let result;
+            const rinci = hitungRincian();
+            try {
+                result = await OrdersStore.add({
+                    nama, telepon, alamat, produk, jumlah, pesan,
+                    metodePembayaran: pembayaran,
+                    zonaId: Number(zonaSelect.value),
+                    tanggalKirim: document.getElementById('tanggalKirim').value || '',
+                    kodePromo: promo.kode || '',
+                    buktiPembayaran: pembayaran === 'QRIS' ? buktiData : null
+                }, { subtotal: rinci.subtotal, ongkir: rinci.ongkir, diskon: rinci.diskon, totalHarga: totalHarga });
+            } catch (e) {
+                console.error('Gagal membuat pesanan:', e);
+                showFormError('Terjadi kendala saat membuat pesanan. Silakan coba lagi.');
+                setBusy(submitBtn, false);
+                return;
+            }
+
+            // Ditolak server (stok habis, data tidak valid, dll.): tampilkan alasannya, isian tetap ada.
+            if (!result || !result.success || !result.orderId) {
+                showFormError((result && result.error) ? result.error.replace(/\s*\(HTTP \d+\)$/, '') : 'Pesanan belum berhasil dibuat. Silakan coba lagi.');
+                setBusy(submitBtn, false);
+                return;
+            }
+
+            // Berhasil: pesanan tersimpan di server (atau, bila server sedang tidak terjangkau, tersimpan aman
+            // di perangkat dan dikirim ulang otomatis). Keduanya menampilkan struk; status sebenarnya
+            // dijelaskan jujur di halaman struk.
+            const orderId = result.orderId;
+            const savedOrder = result.order || {
+                orderId, nama, telepon, alamat, produk, jumlah,
+                metodePembayaran: pembayaran, totalHarga,
+                tanggalKirim: document.getElementById('tanggalKirim').value || '',
+                status: 'Dikonfirmasi', statusPembayaran: pembayaran === 'QRIS' ? 'Menunggu verifikasi' : 'Bayar saat terima'
+            };
+            savedOrder.serverSaved = result.online === true;
+            savedOrder.pending = result.pending === true;
+            try { sessionStorage.setItem('mf_last_receipt', JSON.stringify(savedOrder)); } catch (e) { /* halaman struk tetap dapat memuat dari perangkat */ }
+            MyOrders.add({ id: orderId, telepon: telepon, nama: nama });
+            // Voucher apresiasi sudah dipakai di pesanan ini: jangan ditawarkan lagi.
+            if (promo.kode && promo.kode.indexOf('ULASAN-') === 0 && typeof MFVoucher !== 'undefined') MFVoucher.markUsed(promo.kode);
+            showSuccess(savedOrder);
+            return;
+        });
+
+        // ---- Popup transaksi berhasil: fase 1 (centang + nominal) lalu fase 2 (struk asli, sama dengan unduhan) ----
+        function showSuccess(saved) {
+            const $ = (id) => document.getElementById(id);
+            const box = $('ok'), sheet = $('okSheet'), qris = false;
+            const calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let cur = saved, built = null, buildSeq = 0, polls = 0, timer = null, phaseTimer = null, diagDone = false;
+            const rp = (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+            const now = new Date();
+            $('okTime').textContent = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Jakarta' }) + ' \u00b7 ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' }).replace(':', '.') + ' WIB';
+
+            const HINT = { ENV_BELUM_DIISI: 'Variabel Supabase belum terisi di Vercel.', KUNCI_DB_DITOLAK: 'Kunci Supabase ditolak; periksa SUPABASE_SERVICE_KEY.', FUNGSI_DB_TIDAK_ADA: 'Fungsi create_order belum ada di database; jalankan supabase/schema.sql.', KOLOM_DB_TIDAK_ADA: 'Struktur tabel belum mutakhir; jalankan migrasi yang belum dijalankan.', TABEL_DB_TIDAK_ADA: 'Tabel belum ada; jalankan supabase/schema.sql.', DB_TIDAK_TERJANGKAU: 'Server tidak dapat menghubungi database; periksa SUPABASE_URL dan status proyek.', DB_ERROR: 'Database menolak penyimpanan; lihat Vercel > Logs.' };
+            function pendInfo() { return cur.pending === true && OrdersStore.pendingInfo ? OrdersStore.pendingInfo(cur.orderId) : null; }
+
+            async function renderReceipt() {
+                const my = ++buildSeq, el = $('okReceipt');
+                el.classList.add('loading');
+                try {
+                    const b = await MFReceipt.build(MFReceipt.fromOrder(cur));
+                    if (my !== buildSeq) return;
+                    built = b; el.textContent = ''; b.canvas.setAttribute('role', 'img'); b.canvas.setAttribute('aria-label', 'Struk pesanan ' + cur.orderId); el.appendChild(b.canvas); el.classList.remove('loading');
+                } catch (e) {
+                    console.error(e); if (my !== buildSeq) return;
+                    el.textContent = ''; const m = document.createElement('div'); m.className = 'ok-err'; m.textContent = 'Struk belum bisa ditampilkan (' + (e && e.message ? e.message : 'galat tidak diketahui') + '). Pesanan Anda tetap tercatat.'; el.appendChild(m); el.classList.remove('loading');
+                }
+            }
+            async function diagnose() {
+                const dg = $('okDiag'); dg.hidden = false; dg.textContent = 'Memeriksa penyebab...';
+                const info = pendInfo(), code = info && info.lastCode, http = info && info.lastStatus;
+                try {
+                    const r = await fetch('/api/health', { cache: 'no-store' }); let j = null; try { j = await r.json(); } catch (e) { /* bukan JSON */ }
+                    const out = [];
+                    if (!j) out.push('Server tidak menjawab dengan benar (HTTP ' + r.status + '). Kemungkinan fungsi API belum ter-deploy di Vercel.');
+                    else {
+                        const miss = Object.keys(j.env || {}).filter(k => /SUPABASE/.test(k) && !j.env[k]);
+                        if (miss.length) out.push('Belum terisi di Vercel: ' + miss.join(', ') + '.');
+                        if (j.database && j.database.status === 'gagal') out.push('Database: ' + j.database.sebab);
+                        else if (j.database && j.database.status === 'ok') {
+                            if (http === 429) out.push('Terlalu banyak percobaan dari jaringan ini. Tunggu beberapa menit lalu kirim ulang.');
+                            else out.push('Database terhubung (' + j.database.produkAktif + ' produk aktif, ' + j.database.areaPengiriman + ' area). ' + (HINT[code] || 'Penyimpanan pesanan ditolak server.'));
+                        }
+                    }
+                    dg.textContent = out.join(' ') || 'Penyebab belum dapat ditentukan. Gunakan tombol WhatsApp agar pesanan tetap kami terima.';
+                } catch (e) { dg.hidden = true; }
+            }
+            function waTeks() {
+                return 'Halo Margaluyu Farm, saya ingin memesan ' + cur.produk + ' \u00d7 ' + cur.jumlah + ' (total ' + rp(cur.totalHarga) + '). Nama: ' + cur.nama + '. Alamat: ' + cur.alamat + '. Pembayaran: ' + cur.metodePembayaran + '. Nomor sementara: ' + cur.orderId + '.';
+            }
+            function fill() {
+                const pending = cur.pending === true, info = pendInfo();
+                const failed = Boolean(pending && info && (info.lastStatus || info.lastCode || info.lastError));
+                const kind = !pending ? 'done' : (failed ? 'warn' : 'wait');
+                const label = !pending ? 'Tersimpan di sistem' : (failed ? 'Belum masuk sistem' : 'Mengirim ke sistem\u2026');
+                const labelHero = !pending ? label : (failed ? 'Belum masuk ke sistem \u00b7 mencoba lagi otomatis' : label);
+                const title = pending ? 'Pesanan Tercatat' : 'Pesanan Berhasil';
+                $('okTitle').textContent = title; $('okBarTitle').textContent = title;
+                $('okState').className = 'ok-state ' + kind; $('okState').textContent = labelHero; $('okState').style.display = failed ? 'none' : '';
+                $('okBarState').className = 'ok-bar-state ' + kind; $('okBarState').textContent = label; $('okBarState').style.display = failed ? 'none' : '';
+                $('okBarAmt').textContent = rp(cur.totalHarga);
+                const infoBox = $('okInfo'); infoBox.hidden = !pending;
+                if (pending) {
+                    const kodeTxt = failed ? [info.lastCode, info.lastStatus ? 'HTTP ' + info.lastStatus : ''].filter(Boolean).join(' \u00b7 ') : '';
+                    $('okCode').textContent = kodeTxt ? 'Kode gangguan: ' + kodeTxt : ''; $('okCode').hidden = !kodeTxt;
+                    $('okWa').href = 'https://wa.me/62895635067289?text=' + encodeURIComponent(waTeks());
+                    if (failed && !diagDone) { diagDone = true; diagnose(); }
+                } else { $('okDiag').hidden = true; }
+                const id = encodeURIComponent(cur.orderId), track = 'lacak-pesanan.html?id=' + id, pay = 'struk-pesanan.html?id=' + id;
+                const P = $('okPrimary'), S = $('okSecond');
+                if (qris) { P.textContent = 'Bayar dengan QRIS'; P.href = pay; S.textContent = 'Order Tracking'; S.href = track; }
+                else { P.textContent = 'Order Tracking'; P.href = track; S.textContent = 'Selesai'; S.href = 'index.html'; }
+            }
+
+            // Fase 1: total menghitung naik
+            const total = Number(cur.totalHarga || 0);
+            if (calm) $('okTotal').textContent = rp(total); else { const t0 = performance.now(); requestAnimationFrame(function tick(ts) { const k = Math.min(1, Math.max(0, (ts - t0 - 600) / 800)); $('okTotal').textContent = rp(Math.round(total * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(tick); }); }
+            fill();
+            box.hidden = false;
+            setTimeout(renderReceipt, calm ? 0 : 1400);   // bangun struk setelah animasi pembuka berjalan, agar tidak tersendat document.body.style.overflow = 'hidden';
+
+            // Peralihan ke fase 2 setelah beberapa detik (atau saat dilewati)
+            function toCompact() {
+                if (!sheet.classList.contains('intro')) return;
+                clearTimeout(phaseTimer);
+                sheet.classList.add('leaving');
+                setTimeout(function () { sheet.classList.remove('intro', 'leaving'); $('okPrimary').focus({ preventScroll: true }); }, calm ? 0 : 300);
+            }
+            phaseTimer = setTimeout(toCompact, calm ? 1500 : 3200);
+            $('okSkip').onclick = toCompact; $('okHero').addEventListener('click', function (e) { if (!e.target.closest('button')) toCompact(); });
+            $('okX').onclick = function () { location.href = 'index.html'; };
+
+            // Kirim struk ke WhatsApp beserta gambarnya. Tautan wa.me hanya bisa membawa teks, jadi:
+            //  1) HP/browser yang mendukung: lembar "Bagikan" dibuka dengan gambar struk + teks, lalu pilih WhatsApp.
+            //  2) Komputer: gambar struk disalin ke clipboard (atau diunduh) dan chat WhatsApp dibuka untuk menempelkannya.
+            let waBusy = false;
+            const waNote = (msg) => { const n = $('okWaNote'); n.textContent = msg || ''; n.hidden = !msg; };
+            $('okWa').addEventListener('click', async function (e) {
+                e.preventDefault();
+                if (waBusy) return; waBusy = true; waNote('');
+                const a = this, label = a.textContent, url = a.href;
+                try {
+                    // Bila struk sudah tampil, tidak ada await sebelum navigator.share (agar tetap dianggap klik pengguna).
+                    if (!built) { a.textContent = 'Menyiapkan struk...'; built = await MFReceipt.build(MFReceipt.fromOrder(cur)); }
+                } catch (err) { console.error(err); built = null; }
+                a.textContent = label;
+                try {
+                    if (built) {
+                        const file = new File([built.blob], built.name, { type: 'image/jpeg' });
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            await navigator.share({ files: [file], text: waTeks(), title: 'Struk Margaluyu Farm' });
+                            waBusy = false; return;
+                        }
+                    }
+                } catch (err) {
+                    if (err && err.name === 'AbortError') { waBusy = false; return; }
+                    console.warn('Berbagi berkas tidak berhasil, memakai cadangan.', err);
+                }
+                // Cadangan: salin gambar ke clipboard; bila tidak bisa, unduh. Lalu buka chat dengan teks.
+                let tersalin = false;
+                try {
+                    if (built && navigator.clipboard && window.ClipboardItem) {
+                        const png = new Promise((res) => built.canvas.toBlob(res, 'image/png'));
+                        await navigator.clipboard.write([new ClipboardItem({ 'image/png': png })]);
+                        tersalin = true;
+                    }
+                } catch (err) { console.warn('Salin gambar struk gagal.', err); }
+                if (built && !tersalin) { try { MFReceipt.save(built); } catch (err) { console.error(err); } }
+                const w = window.open(url, '_blank', 'noopener');
+                waNote(!built ? 'Struk belum bisa dibuat. Chat dibuka dengan teks pesanan saja.'
+                    : tersalin ? 'Gambar struk sudah disalin. Tempel di chat WhatsApp (Ctrl+V atau tahan lalu Tempel), lalu kirim.'
+                    : 'Gambar struk sudah diunduh. Lampirkan gambar itu di chat WhatsApp, lalu kirim.');
+                if (!w) waNote('Chat WhatsApp diblokir browser. Izinkan pop-up, lalu ketuk tombol ini lagi.');
+                waBusy = false;
+            });
+
+            $('okSave').onclick = async function () {
+                const b = this, label = b.textContent; b.disabled = true; b.textContent = 'Menyiapkan...';
+                try { if (!built) built = await MFReceipt.build(MFReceipt.fromOrder(cur)); await MFReceipt.save(built); }
+                catch (e) { console.error(e); b.textContent = 'Gagal, coba lagi'; setTimeout(function () { b.textContent = label; b.disabled = false; }, 2200); return; }
+                b.textContent = label; b.disabled = false;
+            };
+            box.addEventListener('keydown', function (e) {
+                if (e.key !== 'Tab') return;
+                const f = Array.from(box.querySelectorAll('button, a[href]')).filter(x => !x.disabled && x.offsetParent !== null);
+                if (!f.length) return;
+                const first = f[0], last = f[f.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            });
+
+            // Pesanan tertunda: kirim ulang di latar (tiap 5 detik, 10 kali) dan lewat tombol; saat berhasil tampil nomor resmi.
+            async function trySync() {
+                try {
+                    const out = await OrdersStore.syncPending();
+                    const hit = (out || []).find(function (x) { return x && x.ok && x.order; });
+                    if (hit) {
+                        cur = Object.assign({}, hit.order, { pending: false, serverSaved: true });
+                        try { sessionStorage.setItem('mf_last_receipt', JSON.stringify(cur)); } catch (e) { /* abaikan */ }
+                        clearInterval(timer); fill(); renderReceipt(); return true;
+                    }
+                } catch (e) { /* coba lagi */ }
+                fill(); return false;
+            }
+            if (cur.pending === true) {
+                timer = setInterval(function () { polls++; trySync(); if (polls >= 10) clearInterval(timer); }, 5000);
+            }
+        }
+
+    </script>
+
+    <script>
+        // Pengatur jumlah dan total di ringkasan.
+        (function () {
+            var q = document.getElementById('jumlah');
+            var out = document.getElementById('odTotal');
+            if (!q || !out) return;
+            var HARGA = 20000;
+            function rp(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
+            function hitung() {
+                var n = parseInt(q.value, 10);
+                out.textContent = rp((isNaN(n) || n < 1 ? 1 : n) * HARGA);
+            }
+            Array.prototype.forEach.call(document.querySelectorAll('.qty-btn'), function (b) {
+                b.addEventListener('click', function () {
+                    var n = parseInt(q.value, 10); if (isNaN(n)) n = 1;
+                    n = Math.max(1, Math.min(999, n + parseInt(b.getAttribute('data-d'), 10)));
+                    q.value = n;
+                    q.dispatchEvent(new Event('input', { bubbles: true }));
+                });
+            });
+            q.addEventListener('input', hitung);
+            hitung();
+        })();
+    </script>
+    <script>
+        // Buka kalender ketika pelanggan mengeklik area mana pun pada kolom tanggal.
+        // showPicker tersedia di browser modern; fallback tetap memfokuskan kolom.
+        (function () {
+            var tanggal = document.getElementById('tanggalKirim');
+            if (!tanggal) return;
+            tanggal.addEventListener('click', function () {
+                if (typeof tanggal.showPicker === 'function') {
+                    try { tanggal.showPicker(); } catch (e) { /* Kalender mungkin sudah terbuka atau browser membatasi pemanggilan. */ }
+                } else {
+                    tanggal.focus();
+                }
+            });
+        })();
+    </script>
+    <script src="dropdown.js"></script>
+    <script src="/analytics-config.js"></script>
+    <script src="/analytics.js"></script>
+    <script src="/pwa.js"></script>
+    <script src="/turnstile-config.js"></script>
+    <script src="/captcha.js"></script>
+    <nav class="np-tabbar" aria-label="Navigasi utama"><a class="np-tab" href="index.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 11l9-8 9 8M5 9.5V20h5v-6h4v6h5V9.5"/></svg></span></span><span class="np-tl">Beranda</span></a><a class="np-tab" href="product.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M6 7h12l1 13H5L6 7zM9 7V6a3 3 0 016 0v1"/></svg></span></span><span class="np-tl">Produk</span></a><a class="np-tab np-tab--cta" href="order-sekarang.html" aria-current="page"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="8.5" cy="20" r="1.2"/><circle cx="17.5" cy="20" r="1.2"/><path d="M2.5 3h2.6l2.4 11.5a2 2 0 0 0 2 1.6h8a2 2 0 0 0 2-1.5L21 7H6"/></svg></span></span><span class="np-tl">Pesan</span></a><a class="np-tab" href="lacak-pesanan.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span></span><span class="np-tl">Tracking</span></a><a class="np-tab" href="contact.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg class="np-wa-svg" viewBox="0 0 24 24" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span></span><span class="np-tl">Kontak</span></a></nav>
+</body>
+
+</html>

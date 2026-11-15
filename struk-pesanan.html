@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a3d38">
+<meta name="robots" content="noindex">
+<title>Struk Pesanan - Margaluyu Farm</title>
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/motion.css">
+<style>
+:root{
+  --brand:#0a3d38;--brand-2:#14524a;--ink:#1f2d28;--muted:#5b6962;--line:#d9d3c2;--line-strong:#b9b29d;
+  --bg:#f3f0e6;--paper:#fff;--ok:#1e6a3c;--err:#a8271f;--gold:#b3893f;
+  --head:'Bricolage Grotesque','Inter',system-ui,sans-serif;--body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:ui-monospace,'SF Mono','IBM Plex Mono',Menlo,Consolas,'Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.hidden{display:none!important}
+
+/* Bilah atas */
+.bar{background:#fff;border-bottom:1px solid var(--line)}
+.bar-in{max-width:1040px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.bar a.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font:700 17px var(--head);letter-spacing:-.015em;color:var(--brand)}
+.bar img{width:28px;height:28px;display:block}
+.bar a.home{font-size:14px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.bar a.home:hover{color:var(--brand)}
+
+.wrap{max-width:1040px;margin:0 auto;padding:clamp(28px,5vw,56px) 24px clamp(48px,8vw,88px)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;align-items:start}
+@media(min-width:900px){.grid{grid-template-columns:minmax(0,1fr) 360px;gap:72px}.slip-col{position:sticky;top:24px}}
+@media(max-width:899px){.slip-col{order:2}.lead-col{order:1}}
+
+/* Status pesanan */
+.state{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start}
+.state-ico{width:40px;height:40px;margin-top:3px;border-radius:50%;display:grid;place-items:center;background:var(--brand)}
+.state-ico svg{width:20px;height:20px;overflow:visible}
+.state-ico path{fill:none;stroke:#fff;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.state[data-s="wait"] .state-ico{background:transparent;border:2px solid #c28a0e}
+.state[data-s="wait"] .state-ico path{stroke:#c28a0e}
+.state h1{font:700 clamp(28px,4.2vw,38px)/1.1 var(--head);letter-spacing:-.025em;color:var(--brand);margin:0 0 8px;outline:0}
+.state p{margin:0;max-width:50ch;font-size:16.5px;line-height:1.6;color:var(--muted)}
+.fresh .state-ico path{stroke-dasharray:26;stroke-dashoffset:26;animation:draw .4s .25s cubic-bezier(.5,0,.2,1) forwards}
+.fresh .state h1,.fresh .state p{animation:rise .45s .1s ease-out both}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.facts{margin:30px 0 0;padding:0;border-top:1px solid var(--line)}
+.facts>div{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line)}
+.facts dt{margin:0;font-size:14px;color:var(--muted)}
+.facts dd{margin:0;display:flex;align-items:center;gap:12px;font:600 18px/1.3 var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.notice{margin:24px 0 0;padding:14px 16px;border:1px solid #e3c98a;border-radius:8px;background:#fbf4e1;font-size:14.5px;line-height:1.55;color:#4d3b0c}
+.notice b{display:block;margin-bottom:2px;font-weight:600}
+.notice .reason{display:block;margin-top:8px;font:12.5px/1.5 var(--mono);color:#7a5307}
+.notice .btn{margin-top:12px;min-height:40px}
+.hint{margin:20px 0 0;font-size:14.5px;color:var(--muted);max-width:52ch}
+
+.copy,.btn{min-height:44px;padding:0 18px;border-radius:6px;font:600 15px var(--body);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:background-color .12s,color .12s,border-color .12s}
+.copy{min-height:36px;padding:0 14px;font-size:14px;background:transparent;border:1px solid var(--line-strong);color:var(--brand)}
+.copy:hover{border-color:var(--brand)}
+.btn-primary{background:var(--brand);border:1px solid var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-2)}
+.btn-line{background:transparent;border:1px solid var(--brand);color:var(--brand)}
+.btn-line:hover{background:var(--brand);color:#fff}
+.btn:disabled{opacity:.6;cursor:wait}
+
+/* Pembayaran */
+.pay{margin-top:32px}
+.pay h2{font:700 21px/1.25 var(--head);letter-spacing:-.015em;color:var(--brand);margin:0 0 6px}
+.pay>p{margin:0;color:var(--muted);font-size:15px;max-width:56ch}
+.qris{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin-top:20px}
+@media(min-width:620px){.qris{grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:start}}
+.qris-img{width:200px;max-width:100%;height:auto;display:block;border:1px solid var(--line);background:#fff;padding:8px;border-radius:6px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:18px;counter-reset:s}
+.steps li{position:relative;padding-left:36px;font-size:15px;line-height:1.55;counter-increment:s}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--brand);color:var(--brand);font:600 13px/21px var(--body);text-align:center}
+.steps b{font-weight:600}
+.amount{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin-top:8px}
+.amount strong{font:700 22px/1.2 var(--mono);color:var(--ink);letter-spacing:-.01em}
+.warn{margin:20px 0 0;padding:0 0 0 14px;border-left:3px solid #c9a95c;font-size:14px;line-height:1.55}
+
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.again{display:inline-block;margin-top:20px;font-size:14.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.again:hover{color:var(--brand)}
+
+/* Pratinjau struk: gambar yang sama persis dengan berkas unduhan. "Dicetak" baris demi baris dari slot. */
+.printer{max-width:320px;margin:0 auto;filter:drop-shadow(0 1px 1px rgba(31,45,40,.10)) drop-shadow(0 14px 22px rgba(31,45,40,.10))}
+.slot{display:block;position:relative;z-index:2;height:12px;border-radius:6px;background:var(--brand)}
+.feed{position:relative;z-index:1;margin:-6px 8px 0;overflow:hidden;min-height:120px}
+.feed canvas{display:block;width:100%;height:auto}
+.feed.loading canvas{visibility:hidden}
+.feed.loading::after{content:"Menyiapkan struk...";position:absolute;inset:0;display:grid;place-items:center;padding-top:40px;font-size:14px;color:var(--muted)}
+.print .feed canvas{animation:print 1.8s .2s steps(36,end) both}
+@keyframes print{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.print .slot{animation:feedbar 1.8s .2s steps(36,end)}
+@keyframes feedbar{50%{transform:translateY(1px)}}
+
+/* Buka kembali struk */
+.verify{max-width:440px}
+.verify h1{font:700 clamp(26px,4vw,34px)/1.15 var(--head);letter-spacing:-.02em;color:var(--brand);margin:0 0 10px}
+.verify p{margin:0 0 22px;color:var(--muted);font-size:16px}
+.verify label{display:block;font-size:14px;font-weight:600;margin:0 0 7px}
+.verify input{width:100%;min-height:46px;padding:10px 14px;font:400 16px var(--body);border:1px solid var(--line-strong);border-radius:6px;background:#fff;color:var(--ink)}
+.verify input:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px rgba(10,61,56,.16)}
+.verify .btn{width:100%;margin-top:14px}
+.error{margin-top:14px;padding:11px 14px;border-left:3px solid var(--err);background:#fbeceA;color:#7d1c16;font-size:14px;line-height:1.5}
+.error:empty{display:none}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:20}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:560px){.wrap{padding-left:16px;padding-right:16px}.bar-in{padding:10px 16px}.actions .btn{flex:1 1 100%}.state{gap:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.fresh .state-ico path{stroke-dashoffset:0}}
+@media print{.bar,.actions,.again,.toast,.lead-col,.slot{display:none!important}.grid{display:block}.printer{filter:none}.feed{margin:0}body{background:#fff}}
+</style>
+    <script src="motion.js" defer></script>
+</head>
+<body>
+<header class="bar"><div class="bar-in"><a class="brand" href="index.html"><img src="img/logo-mark.png" alt="">Margaluyu Farm</a><a class="home" href="index.html">Kembali ke beranda</a></div></header>
+
+<main class="wrap">
+  <!-- Pemuatan data -->
+  <section class="verify hidden" id="verifyCard" aria-labelledby="vTitle">
+    <h1 id="vTitle">Buka struk pesanan</h1>
+    <p>Masukkan nomor HP yang Anda pakai saat memesan untuk menampilkan struk ini.</p>
+    <label for="verifyPhone">Nomor HP</label>
+    <input id="verifyPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="081234567890">
+    <button class="btn btn-primary" id="verifyBtn" type="button">Tampilkan struk</button>
+    <div class="error" id="receiptError" role="alert"></div>
+  </section>
+
+  <div class="grid hidden" id="receiptGrid">
+    <div class="lead-col" id="leadCol">
+      <div class="state" id="state" data-s="ok">
+        <span class="state-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path id="stateIco" d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+        <div>
+          <h1 id="leadTitle" tabindex="-1">Pesanan tersimpan</h1>
+          <p id="leadText" role="status">Pesanan Anda sudah masuk ke sistem Margaluyu Farm.</p>
+        </div>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Nomor pesanan</dt><dd><span id="lId">-</span><button class="copy" id="copyId" type="button">Salin</button></dd></div>
+      </dl>
+
+      <div class="notice hidden" id="notice" role="status">
+        <b id="noticeTitle">Pesanan belum terkirim ke sistem</b>
+        <span id="noticeText">Struk ini tersimpan di perangkat Anda. Kami mencoba mengirim ulang otomatis; jangan hapus data browser sebelum berhasil.</span>
+        <span class="reason" id="noticeReason"></span>
+        <button class="btn btn-line" id="retryNow" type="button">Kirim ulang sekarang</button>
+      </div>
+
+      <section class="pay hidden" id="payQris" aria-labelledby="pqT">
+        <h2 id="pqT">Pembayaran QRIS sedang diperiksa</h2>
+        <p>Bukti pembayaran Anda sudah kami terima. Pesanan diproses setelah pembayaran terverifikasi; kami menghubungi Anda lewat WhatsApp bila ada yang perlu dilengkapi.</p>
+        <span id="payAmount" hidden></span><button id="copyAmount" type="button" hidden></button><a id="waProof" href="#" hidden></a>
+      </section>
+
+      <section class="pay hidden" id="payCod" aria-labelledby="pcT">
+        <h2 id="pcT">Bayar saat pesanan tiba</h2>
+        <p>Siapkan pembayaran tunai sebesar <b id="codAmount">-</b> saat pesanan diantar.</p>
+      </section>
+
+      <div class="actions">
+        <a class="btn btn-primary" id="trackLink" href="lacak-pesanan.html">Order Tracking</a>
+        <button class="btn btn-line" id="downloadReceipt" type="button">Unduh struk (JPG)</button>
+      </div>
+      <p class="hint" id="saveHint">Pesanan bisa dilacak kapan saja dengan nomor pesanan dan nomor HP yang dipakai saat memesan.</p>
+      <a class="again" href="order-sekarang.html">Buat pesanan baru</a>
+    </div>
+
+    <div class="slip-col" id="slipCol">
+      <div class="printer" id="printer">
+        <i class="slot" aria-hidden="true"></i>
+        <div class="feed loading" id="feed"></div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="orders-config.js"></script><script src="orders-store.js"></script><script src="receipt-image.js"></script>
+<script>
+(function(){
+ 'use strict';
+ var $=function(id){return document.getElementById(id)}, params=new URLSearchParams(location.search), orderId=params.get('id')||'', current=null;
+ var rp=function(v){return 'Rp '+Number(v||0).toLocaleString('id-ID')};
+ function setText(id,value){$(id).textContent=value==null||value===''?'-':String(value)}
+ function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('on')},1800)}
+ function copy(text,okMsg){
+  function fallback(){var a=document.createElement('textarea');a.value=text;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');toast(okMsg)}catch(e){toast('Salin manual: '+text)}a.remove()}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){toast(okMsg)},fallback)}else fallback()
+ }
+ function fmtTgl(v){if(!v)return '';var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(v));if(!m)return v;return new Date(+m[1],+m[2]-1,+m[3]).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}
+ function receiptData(o){var qty=Math.max(1,Number(o.jumlah)||1),subtotal=Number(o.subtotal!=null?o.subtotal:(Number(o.totalHarga||0)-Number(o.ongkir||0)+Number(o.diskon||0)));return {id:o.orderId,tanggal:o.tanggal||new Date(o.createdAt||Date.now()).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}),nama:o.nama||'-',produk:o.produk||'-',qty:qty,unit:Math.round(subtotal/qty),subtotal:subtotal,shipping:Number(o.ongkir||0),discount:Number(o.diskon||0),total:Number(o.totalHarga||0),bayar:o.metodePembayaran||'-',paymentStatus:o.statusPembayaran||(o.metodePembayaran==='QRIS'?'Menunggu verifikasi':'Bayar saat terima'),status:(!o.status||o.status==='Belum terkirim')?'Pesanan diterima':o.status,pending:Boolean(o.pending),jadwal:[fmtTgl(o.tanggalKirim),o.jamKirim].filter(Boolean).join(' · ')}}
+
+ var built=null,builtUrl=null,seq=0,calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ // Pratinjau = gambar yang sama persis dengan berkas unduhan (dibuat sekali oleh MFReceipt.build).
+ function renderPreview(o,fresh){
+  var my=++seq,feed=$('feed'),printer=$('printer');
+  feed.classList.add('loading'); printer.classList.remove('print'); feed.removeAttribute('data-err');
+  return MFReceipt.build(receiptData(o)).then(function(b){
+   if(my!==seq)return;
+   built=b; var c=b.canvas; c.id='receiptImg'; c.setAttribute('role','img'); c.setAttribute('aria-label','Pratinjau struk pesanan'); c.style.cssText='display:block;width:100%;height:auto';
+   var old=feed.querySelector('canvas,img,.feed-err'); if(old)old.remove(); feed.appendChild(c);
+   feed.classList.remove('loading'); if(fresh&&!calm){void printer.offsetWidth;printer.classList.add('print')}
+  }).catch(function(e){
+   console.error(e); if(my!==seq)return;
+   var old=feed.querySelector('canvas,img,.feed-err'); if(old)old.remove();
+   var m=document.createElement('div'); m.className='feed-err'; m.textContent='Pratinjau struk belum bisa dibuat. '+(e&&e.message?e.message:'');
+   m.style.cssText='padding:28px 18px;font-size:13.5px;line-height:1.5;color:#7a5307;background:#fbf4e1;text-align:center';
+   feed.appendChild(m); feed.classList.remove('loading'); feed.setAttribute('data-err','1');
+  });
+ }
+ function reasonText(o){
+  var i=OrdersStore.pendingInfo&&OrdersStore.pendingInfo(o.orderId); if(!i)return '';
+  var c=i.lastStatus,why='';
+  if(c===429)why='Terlalu banyak percobaan dari jaringan ini (kode 429).';
+  else if(c>=500||c===404||c===405)why='Server pesanan belum bisa memproses (kode '+c+').';
+  else if(!c)why='Tidak ada koneksi ke server.';
+  else if(c)why='Server menjawab kode '+c+'.';
+  return why+(i.tries?' Percobaan: '+i.tries+'.':'');
+ }
+ function show(o,fresh,fromServer){
+  if(!o||!o.orderId)return false; current=o; var pending=!fromServer, d=receiptData(o), qris=String(d.bayar).toUpperCase()==='QRIS';
+  setText('lId',d.id);
+  $('trackLink').href='lacak-pesanan.html?id='+encodeURIComponent(d.id);
+  document.querySelector('.grid').classList.toggle('fresh',Boolean(fresh));
+  // Tampilan sama seperti pesanan biasa. Peringatan hanya muncul bila pengiriman ke sistem sudah gagal berulang.
+  var info=pending&&OrdersStore.pendingInfo?OrdersStore.pendingInfo(o.orderId):null, stuck=Boolean(info&&info.tries>=2);
+  $('state').setAttribute('data-s',stuck?'wait':'ok');
+  $('stateIco').setAttribute('d',stuck?'M12 7v5.5l3 2':'M5 12.5l4.5 4.5L19 7.5');
+  setText('leadTitle',fresh?(pending?'Pesanan tercatat':'Pesanan tersimpan'):'Struk pesanan');
+  setText('leadText',fresh?(pending?'Struk Anda sudah dibuat dan nomor pesanan tercatat. Kami meneruskannya ke sistem secara otomatis.':(qris?'Pesanan sudah masuk ke sistem. Selesaikan pembayaran QRIS di bawah agar bisa kami proses.':'Pesanan sudah masuk ke sistem dan menunggu konfirmasi kami. Bayar tunai saat pesanan tiba.')):'Status pesanan: '+d.status+'. Pembayaran: '+d.paymentStatus+'.');
+  $('notice').classList.toggle('hidden',!stuck);
+  if(stuck){var rs=reasonText(o);$('noticeReason').textContent=rs;$('noticeReason').classList.toggle('hidden',!rs)}
+  $('payQris').classList.toggle('hidden',!qris); $('payCod').classList.toggle('hidden',qris||String(d.bayar).toUpperCase()!=='COD');
+  setText('payAmount',rp(d.total)); setText('codAmount',rp(d.total));
+  $('waProof').href='https://wa.me/62895635067289?text='+encodeURIComponent('Halo Margaluyu Farm, saya sudah membayar pesanan '+d.id+' sebesar '+rp(d.total)+'. Berikut bukti pembayarannya.');
+  $('saveHint').classList.toggle('hidden',stuck);
+  $('verifyCard').classList.add('hidden'); $('receiptGrid').classList.remove('hidden');
+  document.title=(fresh?'Pesanan tersimpan - ':'Struk ')+d.id+' - Margaluyu Farm';
+  renderPreview(o,fresh);
+  if(fresh){try{$('leadTitle').focus({preventScroll:true})}catch(e){}}
+  return true;
+ }
+
+ // Kirim ulang pesanan tertunda; bila berhasil, struk berganti ke nomor resmi dari server.
+ var retrying=false;
+ async function trySync(manual){
+  if(retrying||!current||!current.pending)return; retrying=true;
+  try{
+   var res=await OrdersStore.syncPending(), hit=res.filter(function(r){return r.ok&&r.tempId===current.orderId})[0];
+   if(!hit){var off=OrdersStore.officialIdFor(current.orderId);if(off){var f=await OrdersStore.findById(off,current.telepon);if(f.order)hit={order:f.order}}}
+   if(hit){
+    var o=hit.order; o.serverSaved=true; o.pending=false;
+    try{sessionStorage.setItem('mf_last_receipt',JSON.stringify(o));sessionStorage.setItem('mf_receipt_seen_'+o.orderId,'1')}catch(e){}
+    try{if(typeof MyOrders!=='undefined')MyOrders.add({id:o.orderId,telepon:o.telepon,nama:o.nama})}catch(e){}
+    try{history.replaceState(null,'','struk-pesanan.html?id='+encodeURIComponent(o.orderId))}catch(e){}
+    orderId=o.orderId; show(o,true,true); toast('Pesanan berhasil masuk ke sistem');
+   }
+  }catch(e){console.error(e)}
+  finally{retrying=false}
+ }
+ window.addEventListener('mf-orders-synced',function(){trySync(false)});
+ setInterval(function(){trySync(false)},20000);
+
+ // Struk yang baru dibuat disimpan sementara oleh halaman order; tandai agar pesan sukses hanya tampil sekali.
+ var cached=null,seenKey='mf_receipt_seen_'+orderId;
+ try{cached=JSON.parse(sessionStorage.getItem('mf_last_receipt')||'null')}catch(e){}
+ if(cached&&cached.orderId===orderId){
+  var seen=false;try{seen=sessionStorage.getItem(seenKey)==='1';sessionStorage.setItem(seenKey,'1')}catch(e){}
+  var ok=cached.pending!==true&&cached.serverSaved!==false;
+  show(cached,!seen,ok); if(cached.pending)setTimeout(function(){trySync(false)},800);
+ }else{ $('verifyCard').classList.remove('hidden'); if(!orderId) $('receiptError').textContent='Nomor pesanan tidak ditemukan pada tautan ini. Buka struk dari halaman Order Tracking.'; }
+
+ $('verifyBtn').addEventListener('click',async function(){
+  var btn=this,phone=$('verifyPhone').value.trim();
+  if(!phone){$('receiptError').textContent='Masukkan nomor HP terlebih dahulu.';$('verifyPhone').focus();return}
+  btn.disabled=true;btn.textContent='Memuat struk';$('receiptError').textContent='';
+  try{var found=await OrdersStore.findById(orderId,phone);
+   if(!found.order){$('receiptError').textContent=found.online===false?'Server pesanan belum dapat dihubungi. Periksa koneksi lalu coba lagi.':'Nomor pesanan atau nomor HP tidak cocok.';return}
+   show(found.order,false,!found.pending)
+  }catch(e){console.error(e);$('receiptError').textContent='Struk belum dapat dimuat. Silakan coba lagi.'}
+  finally{btn.disabled=false;btn.textContent='Tampilkan struk'}
+ });
+ $('verifyPhone').addEventListener('keydown',function(e){if(e.key==='Enter')$('verifyBtn').click()});
+ $('copyId').addEventListener('click',function(){if(current)copy(current.orderId,'Nomor pesanan disalin')});
+ $('copyAmount').addEventListener('click',function(){if(current)copy(String(Math.round(Number(current.totalHarga||0))),'Nominal disalin')});
+ $('downloadReceipt').addEventListener('click',async function(){
+  if(!current)return;var btn=this;btn.disabled=true;btn.textContent='Menyiapkan gambar';
+  try{if(!built)built=await MFReceipt.build(receiptData(current));await MFReceipt.save(built)}
+  catch(e){console.error(e);toast('Gambar struk belum berhasil dibuat. Coba lagi.')}
+  finally{btn.disabled=false;btn.textContent='Unduh struk (JPG)'}
+ });
+ $('retryNow').addEventListener('click',async function(){var b=this;b.disabled=true;b.textContent='Mengirim...';try{await trySync(true);if(current&&current.pending){var rs=reasonText(current);$('noticeReason').textContent=rs;$('noticeReason').classList.toggle('hidden',!rs)}}finally{b.disabled=false;b.textContent='Kirim ulang sekarang'}});
+})();
+</script>
+</body></html>

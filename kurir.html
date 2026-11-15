@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a3d38">
+<title>Antar pesanan - Margaluyu Farm</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/motion.css">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<style>
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;background:#f3f0e6;color:#1f2d28;font:400 15px/1.5 Inter,system-ui,sans-serif}
+header{padding:14px 18px 12px;padding-top:max(14px,env(safe-area-inset-top));background:#0a3d38;color:#fff}
+header small{display:block;opacity:.7;font-size:12.5px}
+header b{font:700 19px/1.2 'Bricolage Grotesque',Inter,sans-serif;letter-spacing:-.01em;font-family:'Bricolage Grotesque',Inter,sans-serif}
+#map{flex:1;min-height:200px;background:#e8e4d6}
+.panel{padding:16px 18px;padding-bottom:max(16px,env(safe-area-inset-bottom));background:#fff;border-top:1px solid #d9d3c2}
+.addr{margin:0 0 12px;font-size:14.5px}.addr b{display:block;font-size:12.5px;color:#5b6962;font-weight:500;margin-bottom:2px}
+.state{margin:0 0 12px;padding-left:12px;border-left:3px solid #b3893f;font-size:14px;color:#1f2d28}
+.state.ok{border-color:#1e6a3c}.state.err{border-color:#a8271f}
+button{width:100%;height:50px;border-radius:6px;border:1px solid #0a3d38;background:#0a3d38;color:#fff;font:600 16px Inter,sans-serif;cursor:pointer}
+button.sec{background:transparent;color:#0a3d38;margin-top:10px;height:46px}
+button:disabled{opacity:.5}
+.me{width:16px;height:16px;border-radius:50%;background:#0a3d38;border:3px solid #fff;box-shadow:0 0 0 6px rgba(10,61,56,.2)}
+.pin{width:22px;height:22px;background:#b3893f;border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 6px rgba(0,0,0,.35)}
+</style>
+    <script src="motion.js" defer></script>
+</head>
+<body>
+<header><small id="oid">Pesanan</small><b id="who">Memuat...</b></header>
+<div id="map" aria-label="Peta pengantaran"></div>
+<div class="panel">
+  <p class="addr"><b>Alamat tujuan</b><span id="addr">-</span></p>
+  <p class="state" id="state" role="status">Memeriksa tautan...</p>
+  <button id="go" disabled>Mulai bagikan lokasi</button>
+  <button id="arrive" class="sec" hidden>Pesanan sudah sampai</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="tracking-config.js"></script>
+<script src="peta-dasar.js"></script>
+<script src="kurir.js"></script>
+</body>
+</html>

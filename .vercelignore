@@ -1,0 +1,6 @@
+*.md
+_arsip-asli
+scripts
+supabase
+tests
+.github

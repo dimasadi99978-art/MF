@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Form Ulasan - Margaluyu Farm</title>
+    <meta name="theme-color" content="#0a3d38">
+    <link rel="stylesheet" href="css/style-rating.css">
+    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/menu.css">
+    <style>
+        @media (max-width: 900px) { body { padding-bottom: 0; } }
+        .ct { padding: 32px 0 56px; background: #fff; }
+        .ct-grid { display: block; }
+        .ct-form { max-width: 600px; }
+        .ct h3 { font-family: var(--font-head); font-weight: 700; letter-spacing: -0.02em; font-size: 22px; color: var(--forest); margin: 0 0 12px; text-align: left; }
+        .ct-sub { margin: -6px 0 20px; color: var(--ink-soft); text-align: left; }
+        .ct-wa { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 46px; padding: 0 20px;
+            background: #1f8f4a; color: #fff; font-weight: 600; font-size: 15px; border-radius: 999px; text-decoration: none; transition: background-color .15s ease; }
+        .ct-wa:hover { background: #197a3e; color: #fff; }
+        .ct-wa svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .ct-list { margin: 20px 0 0; }
+        .ct-list > div { display: grid; grid-template-columns: 90px 1fr; gap: 12px; padding: 12px 0; }
+        .ct-list dt { color: var(--muted); font-size: 14px; padding-top: 1px; }
+        .ct-list dd { margin: 0; font-size: 15px; }
+        .ct-list a { color: var(--ink); text-decoration: underline; text-decoration-color: #b8c9b8; text-underline-offset: 4px; }
+        .ct-list a:hover { color: var(--forest); text-decoration-color: var(--forest); }
+        .ct-form .form-card { max-width: none; margin: 0; padding: 24px; }
+        .reward-box { padding: 18px; border: 1px solid #d3e2d6; border-radius: 14px; background: linear-gradient(180deg, #f7fbf8 0%, #f1f7f3 100%); }
+        .reward-head { display: flex; align-items: center; gap: 12px; }
+        .reward-icon { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 10px; background: #e1efe5; color: #1b6b3a; font-size: 16px; }
+        .reward-title { min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+        .reward-title strong { color: var(--forest, #0a3d38); font-size: 1rem; line-height: 1.3; }
+        .reward-badge { padding: 2px 9px; border-radius: 999px; background: #fff; border: 1px solid #cfe0d3; color: #4c6356; font-size: 11.5px; font-weight: 600; letter-spacing: .02em; }
+        .reward-desc { margin: 10px 0 10px; font-size: 13.5px; line-height: 1.6; color: #46584d; }
+        .reward-terms { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0 0 14px; padding: 0; list-style: none; }
+        .reward-terms li { padding: 4px 10px; border-radius: 999px; background: #fff; border: 1px solid #dbe7de; color: #3b4f43; font-size: 12px; line-height: 1.4; }
+        .reward-box label { display: block; margin-bottom: 6px; font-weight: 600; }
+        .reward-help { margin-top: 8px; font-size: 12.5px; line-height: 1.55; color: #5b6c61; }
+        .reward-help a { color: #1b6b3a; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+        .reward-order { margin: 0 0 10px; padding: 8px 10px; border-radius: 8px; background: #e8f3ea; font-size: 13px; color: #1b5e36; }
+        .reward-order[hidden] { display: none; }
+        .rsc-body { min-width: 0; flex: 1; }
+        .rsc-note { font-weight: 600; }
+        .voucher-ticket { margin: 12px 0; padding: 16px; border: 2px dashed #1b6b3a; border-radius: 12px; background: #fff; text-align: center; }
+        .voucher-ticket[hidden] { display: none; }
+        .vt-label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #52645a; }
+        .vt-code { margin: 6px 0 2px; font: 800 1.45rem/1.2 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .06em; color: #0a3d38; word-break: break-all; user-select: all; }
+        .vt-meta { font-size: 13px; color: #3b4a42; line-height: 1.5; }
+        .vt-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 12px 0 8px; }
+        .vt-use { display: inline-block; margin: 2px 0 6px; font-weight: 700; color: #1b6b3a; }
+        .vt-help { margin: 0; font-size: 12px; line-height: 1.5; color: #6b776f; }
+        .anon-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; font-size: 14px; color: var(--ink-soft); cursor: pointer; }
+        .anon-row input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--forest); flex: 0 0 auto; }
+        .anon-row small { display: block; color: var(--muted); font-size: 12.5px; font-weight: 400; }
+        #ratingForm input:disabled { background: var(--paper-alt); color: var(--muted); cursor: not-allowed; }
+        @media (max-width: 900px) { .ct { padding: 22px 0 44px; } .ct-grid { grid-template-columns: 1fr; } .ct-form .form-card { padding: 22px 18px; } }
+    </style>
+    
+    <link rel="stylesheet" href="css/ui.css">
+    <script src="reveal.js"></script>
+    <noscript><style>.rv{opacity:1!important;transform:none!important}</style></noscript>
+    <style>.js .rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}.js .rv.is-in{opacity:1;transform:none}@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}</style>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <meta name="description" content="Tulis ulasan dan saran Anda tentang susu Saanen Margaluyu Farm.">
+    
+    
+    
+    <link rel="stylesheet" href="css/fonts.css">
+    <!-- SEO: ganti susukambingsaanensegar354.vercel.app dengan domain Anda (lihat PANDUAN-SUPABASE.md langkah 1) -->
+    <link rel="canonical" href="https://susukambingsaanensegar354.vercel.app/rating.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Margaluyu Farm">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:url" content="https://susukambingsaanensegar354.vercel.app/rating.html">
+    <meta property="og:title" content="Tulis Ulasan - Margaluyu Farm">
+    <meta property="og:description" content="Tulis ulasan dan saran Anda tentang susu Saanen Margaluyu Farm.">
+    <meta property="og:image" content="https://susukambingsaanensegar354.vercel.app/img/banner-home-crop.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tulis Ulasan - Margaluyu Farm">
+    <meta name="twitter:description" content="Tulis ulasan dan saran Anda tentang susu Saanen Margaluyu Farm.">
+    <meta name="twitter:image" content="https://susukambingsaanensegar354.vercel.app/img/banner-home-crop.jpg">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#0a3d38">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <link rel="stylesheet" href="css/rating-tidy.css">
+    <link rel="stylesheet" href="css/voucher.css">
+    <link rel="stylesheet" href="css/navpill.css">
+    <link rel="stylesheet" href="css/motion.css">
+    <script src="navpill.js" defer></script>
+    <script src="motion.js" defer></script>
+    <link rel="stylesheet" href="css/refine.css">
+    <link rel="stylesheet" href="css/polish.css">
+    <link rel="stylesheet" href="css/file-picker.css">
+    <script src="refine.js" defer></script>
+</head>
+
+<body>
+    <!-- header -->
+    <header class="site-top">
+        <div class="container">
+            <h1 class="brand"><a href="index.html"><img class="brand-mark" src="img/logo-mark.png" alt="" width="34" height="34"><span class="brand-name">Margaluyu Farm</span></a></h1>
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Buka atau tutup menu">
+            <label for="nav-toggle" class="nav-toggle-label" aria-hidden="true"><span></span><span></span><span></span></label>
+            <label for="nav-toggle" class="menu-backdrop" aria-hidden="true"></label>
+            <nav class="menu-panel" aria-label="Menu utama">
+                <div class="menu-head"><a class="menu-brand" href="index.html"><img src="img/logo-mark.png" alt="" width="26" height="26">Margaluyu Farm</a><label for="nav-toggle" class="menu-close" aria-label="Tutup menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></label></div>
+                <a class="menu-link" style="--i:1" href="index.html"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 11l9-8 9 8M5 9.5V20h5v-6h4v6h5V9.5"/></svg></span><span class="ml-t">Beranda</span><span class="ml-s">Susu Saanen segar</span></a>
+                <a class="menu-link" style="--i:2" href="product.html"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M6 7h12l1 13H5L6 7zM9 7V6a3 3 0 016 0v1"/></svg></span><span class="ml-t">Produk</span><span class="ml-s">Harga dan detail</span></a>
+                <a class="menu-link" style="--i:3" href="lacak-pesanan.html"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span><span class="ml-t">Order Tracking</span><span class="ml-s">Cek status pesanan</span></a>
+                <a class="menu-link" style="--i:4" href="contact.html"><span class="np-ico" aria-hidden="true"><svg class="np-wa-svg" viewBox="0 0 24 24" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span><span class="ml-t">Hubungi Kami</span><span class="ml-s">WhatsApp dan kontak</span></a>
+                <div class="menu-foot">
+                    <a class="menu-cta" href="order-sekarang.html"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="8.5" cy="20" r="1.2"/><circle cx="17.5" cy="20" r="1.2"/><path d="M2.5 3h2.6l2.4 11.5a2 2 0 0 0 2 1.6h8a2 2 0 0 0 2-1.5L21 7H6"/></svg></span><span class="np-label">Pesan sekarang</span></a>
+                    <a class="menu-wa" href="https://wa.me/62895635067289?text=Halo%20Margaluyu%20Farm%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener">Tanya lewat WhatsApp</a>
+                </div>
+                <p class="menu-note">0895-6350-67289<br>Surabaya, Jawa Timur</p>
+            </nav>
+            <a class="np-wa" href="https://wa.me/62895635067289?text=Halo%20Margaluyu%20Farm%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener" aria-label="Tanya lewat WhatsApp"><span class="np-ico" aria-hidden="true"><svg class="np-wa-svg" viewBox="0 0 24 24" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span></a>
+        </div>
+    </header>
+<div id="main" tabindex="-1"></div>
+
+
+    <main class="ct">
+        <div class="container ct-grid">
+
+            <section class="ct-form rv" id="rating" aria-label="Formulir ulasan">
+
+            <section class="vwallet" id="voucherWallet" aria-label="Voucher Anda" hidden></section>
+
+            <div class="form-card">
+                <div class="rt-head">
+                    <div class="rt-icon"><i class="fas fa-seedling" aria-hidden="true"></i></div>
+                    <h2>Form Ulasan</h2>
+                    <p>Ceritakan pengalaman Anda dengan susu Saanen kami. Nama bisa disamarkan.</p>
+                </div>
+
+                <form id="ratingForm" novalidate>
+                <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"><label>Jangan diisi<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+                    <h3 class="grp">Tentang Anda</h3>
+                    <div class="field">
+                        <label for="nama">Nama</label>
+                        <input class="input" type="text" id="nama" name="nama" placeholder="Contoh: Fulan"
+                            maxlength="60" autocomplete="name" required>
+                        <div class="error" id="namaError" role="alert"></div>
+                        <label class="anon-row" for="anonim">
+                            <input type="checkbox" id="anonim" name="anonim">
+                            <span>Samarkan nama saya<small id="anonPreview"></small></span>
+                        </label>
+                    </div>
+
+                    <h3 class="grp">Penilaian</h3>
+                    <fieldset class="field star-field">
+                        <legend>Rating <span class="opt">(opsional)</span></legend>
+                        <div class="star-input" id="starInput">
+                            <input type="radio" id="star5" name="rating" value="5"><label for="star5"
+                                title="5 bintang"><span class="visually-hidden">5 bintang</span><i class="fas fa-star"
+                                    aria-hidden="true"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4"><label for="star4"
+                                title="4 bintang"><span class="visually-hidden">4 bintang</span><i class="fas fa-star"
+                                    aria-hidden="true"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3"><label for="star3"
+                                title="3 bintang"><span class="visually-hidden">3 bintang</span><i class="fas fa-star"
+                                    aria-hidden="true"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2"><label for="star2"
+                                title="2 bintang"><span class="visually-hidden">2 bintang</span><i class="fas fa-star"
+                                    aria-hidden="true"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1"><label for="star1"
+                                title="1 bintang"><span class="visually-hidden">1 bintang</span><i class="fas fa-star"
+                                    aria-hidden="true"></i></label>
+                        </div>
+                        <div class="star-hint" id="starHint" aria-live="polite">Ketuk bintang untuk memberi nilai</div>
+                    </fieldset>
+
+                    <div class="field">
+                        <label for="komentar">Ulasan <span class="opt">(opsional)</span></label>
+                        <textarea class="textarea" id="komentar" name="komentar" maxlength="600"
+                            placeholder="Bagikan pengalaman Anda dengan produk kami"></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="kritiksaran">Kritik &amp; Saran <span class="opt">(opsional)</span></label>
+                        <textarea class="textarea" id="kritiksaran" name="kritiksaran" maxlength="600"
+                            placeholder="Apa yang kurang, atau ide perbaikan untuk kami?"></textarea>
+                    </div>
+
+                    <h3 class="grp">Foto <span class="opt">(opsional)</span></h3>
+                    <div class="field">
+                        <div class="fpick">
+                            <input class="fpick-input" type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp" aria-describedby="fotoNote">
+                            <label for="foto" class="fpick-btn" id="fotoPick">Pilih file</label>
+                            <span class="fpick-name" id="fotoHint" aria-live="polite">Belum ada file</span>
+                            <button type="button" class="fpick-clear" id="photoRemove" aria-label="Hapus foto" hidden>Hapus</button>
+                        </div>
+                        <p class="fpick-note" id="fotoNote">JPG, PNG, atau WebP. Maksimal 8 MB.</p>
+                        <div class="error" id="fotoError" role="alert"></div>
+                    </div>
+
+                    <input type="hidden" id="orderIdReward" name="orderIdReward">
+                    <div class="field" id="orderField">
+                        <label for="orderIdManual">Nomor pesanan <span class="opt">(untuk voucher)</span></label>
+                        <input class="input" type="text" id="orderIdManual" maxlength="30" placeholder="Contoh: MF-261105-AB12CD" autocomplete="off" autocapitalize="characters" spellcheck="false">
+                        <div class="help" id="orderHelp">Isi nomor pesanan dari struk agar voucher terbit.</div>
+                        <button type="button" class="link-btn" id="orderChange" hidden>Bukan pesanan ini? Ganti nomor</button>
+                    </div>
+                    <div class="error" id="orderError" role="alert"></div>
+                    <button type="button" class="recover-link" id="recoverBtn" hidden>Tampilkan voucher saya</button>
+
+                    <div class="form-msg" id="formMsg" role="status" aria-live="polite" hidden></div>
+                    <div class="rating-success-card" id="ratingSuccessCard" hidden role="status" aria-live="polite">
+                        <div class="rating-success-icon" aria-hidden="true"><i class="fas fa-check"></i></div>
+                        <div class="rsc-body">
+                            <strong>Terima kasih!</strong>
+                            <p>Rating dan masukan Anda berhasil diberikan.</p>
+                            <p id="voucherRewardText" class="rsc-note"></p>
+                            <div id="voucherSlot"></div>
+                            <a href="index.html#testimoni" class="btn btn--sm">Lihat Ulasan</a>
+                        </div>
+                    </div>
+                <div id="cfTurnstile" style="margin:0 0 14px;"></div>
+                    <button type="submit" class="btn" id="submitBtn">Kirim</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <div class="footer-col footer-brand">
+                <strong>Margaluyu Farm</strong>
+                <p>Peternakan sapi dan kambing yang menyediakan susu kambing Saanen segar serta hewan untuk kebutuhan kurban dan akikah.</p>
+                <a class="footer-contact" href="https://wa.me/62895635067289" target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i> 0895-6350-67289
+                </a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">Menu</h4>
+                <div class="footer-links"><a href="index.html">Beranda</a><a href="product.html">Produk</a><a href="order-sekarang.html">Pesan Sekarang</a><a href="lacak-pesanan.html">Order Tracking</a><a href="contact.html">Hubungi Kami</a></div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">Ikuti Kami</h4>
+                <div class="footer-social">
+                    <a href="https://wa.me/62895635067289" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/margaluyufarm354" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@margaluyu.farm.35" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a hidden href="https://www.youtube.com/@margaluyufarm354" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <small>Copyright &copy; 2026 - MARGALUYU FARM, All Rights Reserved. &middot; <a href="faq.html">Pertanyaan Umum</a> &middot; <a href="privasi.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Kebijakan Privasi</a></small>
+        </div>
+    </footer>
+    <script src="nav-fix.js" defer></script>
+
+
+    <script src="testimoni-config.js"></script>
+    <script src="testimoni-store.js"></script>
+    <script src="testimoni-media.js"></script>
+    <script src="my-orders.js"></script>
+    <script src="voucher-store.js"></script>
+    <script src="rating.js"></script>
+    <script src="/analytics-config.js"></script>
+    <script src="/analytics.js"></script>
+    <script src="/pwa.js"></script>
+    <script src="/turnstile-config.js"></script>
+    <script src="/captcha.js"></script>
+    <nav class="np-tabbar" aria-label="Navigasi utama"><a class="np-tab" href="index.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 11l9-8 9 8M5 9.5V20h5v-6h4v6h5V9.5"/></svg></span></span><span class="np-tl">Beranda</span></a><a class="np-tab" href="product.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M6 7h12l1 13H5L6 7zM9 7V6a3 3 0 016 0v1"/></svg></span></span><span class="np-tl">Produk</span></a><a class="np-tab np-tab--cta" href="order-sekarang.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="8.5" cy="20" r="1.2"/><circle cx="17.5" cy="20" r="1.2"/><path d="M2.5 3h2.6l2.4 11.5a2 2 0 0 0 2 1.6h8a2 2 0 0 0 2-1.5L21 7H6"/></svg></span></span><span class="np-tl">Pesan</span></a><a class="np-tab" href="lacak-pesanan.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></span></span><span class="np-tl">Tracking</span></a><a class="np-tab" href="contact.html"><span class="np-ic"><span class="np-ico" aria-hidden="true"><svg class="np-wa-svg" viewBox="0 0 24 24" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span></span><span class="np-tl">Kontak</span></a></nav>
+    </body>
+
+</html>
